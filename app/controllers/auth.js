@@ -256,6 +256,8 @@ let obj = (rootpath) => {
     fn.register = async (req, res, next) => {
         try{
             let validator = require('validator')
+            let moment = require('moment')
+            let now = moment().format('YYYY-MM-DD HH:mm:ss')
 
             // check customer is already logged in or not
             if(req.objUser != null) {
@@ -267,7 +269,7 @@ let obj = (rootpath) => {
             let email = (req.body.email || '').trim().toLowerCase()
             let phone = (req.body.phone || '').trim()            
             let province = (req.body.province || '').trim()            
-            let birhday = (req.body.birhday || '').trim()            
+            let birthday = req.body.birthday            
             let password = await fn.setPassword((req.body.password || '').trim())
 
             //sanitize phone number
@@ -302,14 +304,12 @@ let obj = (rootpath) => {
             }
 
             // validate province
-            if(!cst.province.incluses(province)){
+            if(!cst.province.includes(province.toLowerCase())){
                 throw getMessage('tidak masuk provinsi yang boleh pinjem duit')
             }
 
             // validate age
-            let ageDifMs = Date.now() - birthday.getTime();
-            let ageDate = new Date(ageDifMs); // miliseconds from epoch
-            let age = Math.abs(ageDate.getUTCFullYear() - 1970);
+            let age = moment().diff(birthday, "years")
             if(age < 17 || age >= 80){
                 throw getMessage('belum cukup umur / lewat usia')
             }
@@ -325,7 +325,7 @@ let obj = (rootpath) => {
                     "email": email,
                     "phone": phone,
                     "province": province,
-                    "bithday": birhday,
+                    "birthday": moment(birthday, "YYYY-MM-DD"),
                     "password": password,                    
                     "objToken": req.objToken,
                 }

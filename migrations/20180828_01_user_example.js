@@ -25,7 +25,11 @@ module.exports = {
                 },
                 user_phone: {
                     type: Sequelize.STRING(50),
-                    allowNull: true
+                    allowNull: false
+                },
+                user_identification_id: {
+                    type: Sequelize.STRING(100),
+                    allowNull: false
                 },
                 user_birthday: {
                     type: Sequelize.DATE,

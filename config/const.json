@@ -5,6 +5,6 @@
     "ver_active": "active",
     "ver_inactive": "inactive",
     "ver_unreleased": "unreleased",
-    
-    "province": ["DKI JAKARTA", "JAWA BARAT", "JAWA TIMUR", "SUMATERA UTARA"]
+
+    "province": ["dki jakarta", "jawa barat", "jawa timur", "sumatera utara"]
 }
