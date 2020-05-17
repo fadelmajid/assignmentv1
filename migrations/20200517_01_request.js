@@ -20,9 +20,9 @@ module.exports = {
                     allowNull: false
                 },
                 reqloan_status: {
-                    type: Sequelize.ENUM('active', 'inactive'),
+                    type: Sequelize.ENUM('accepted', 'rejected'),
                     allowNull: false,
-                    defaultValue: 'active'
+                    defaultValue: 'rejected'
                 },
                 created_date: {
                     type: Sequelize.DATE,
