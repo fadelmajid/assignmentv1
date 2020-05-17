@@ -129,18 +129,20 @@ let obj = (objDB, db, rootpath) => {
         const now = moment().format('YYYY-MM-DD HH:mm:ss')
         const authModel = require('./auth.js')(objDB, db, rootpath)
         const ltModel = require('./lock_transaction.js')(objDB, db, rootpath)
-        const {name, email, phone, password, objToken} = data
+        const {name, email, phone, birhtday, province, password, objToken} = data
         //BEGIN TRANSACTION
         await db.query('BEGIN')
         try{
             // create lock_transaction data
-            await ltModel.insertRegister('Insert new user, name ' + name + ', email ' + email + ', phone' + phone)
+            await ltModel.insertRegister('Insert new user, name ' + name + ', email ' + email + ', phone' + phone + ', birthday' + birhtday + ', province' + province)
 
             let data = {
                 "user_name": name,
                 "user_code": await fn.getUniqueCode(email),
                 "user_email": email,
                 "user_phone": phone,
+                "user_province": province,
+                "user_birthday": birhtday,
                 "user_password": password,
                 "user_status": "active",
                 "last_login": now,

@@ -266,6 +266,8 @@ let obj = (rootpath) => {
             let name = (req.body.name || '').trim()
             let email = (req.body.email || '').trim().toLowerCase()
             let phone = (req.body.phone || '').trim()            
+            let province = (req.body.province || '').trim()            
+            let birhday = (req.body.birhday || '').trim()            
             let password = await fn.setPassword((req.body.password || '').trim())
 
             //sanitize phone number
@@ -280,11 +282,11 @@ let obj = (rootpath) => {
             if(validator.isEmpty(name)) {
                 throw getMessage('usr002')
             }
-
             // Validate username length
             if (!loadLib('validation').validName(name)) {
                 throw getMessage('usr018')
             }
+
             // required email
             if(validator.isEmpty(email)) {
                 throw getMessage('usr003')
@@ -293,12 +295,25 @@ let obj = (rootpath) => {
             if(loadLib('validation').isValidEmail(email) == false) {
                 throw getMessage('usr004')
             }
-
             // validate duplicate email
             let dupeEmail = await req.model('user').getUserEmail(email)
             if(isEmpty(dupeEmail) == false) {
                 throw getMessage('usr005')
             }
+
+            // validate province
+            if(!cst.province.incluses(province)){
+                throw getMessage('tidak masuk provinsi yang boleh pinjem duit')
+            }
+
+            // validate age
+            let ageDifMs = Date.now() - birthday.getTime();
+            let ageDate = new Date(ageDifMs); // miliseconds from epoch
+            let age = Math.abs(ageDate.getUTCFullYear() - 1970);
+            if(age < 17 || age >= 80){
+                throw getMessage('belum cukup umur / lewat usia')
+            }
+
             // get user detail
             let detailUser = await req.model('user').getUserPhone(phone)
 
@@ -309,6 +324,8 @@ let obj = (rootpath) => {
                     "name": name,
                     "email": email,
                     "phone": phone,
+                    "province": province,
+                    "bithday": birhday,
                     "password": password,                    
                     "objToken": req.objToken,
                 }
