@@ -27,6 +27,14 @@ module.exports = {
                     type: Sequelize.STRING(50),
                     allowNull: true
                 },
+                user_birthday: {
+                    type: Sequelize.DATE,
+                    allowNull: false,
+                },
+                user_province: {
+                    type: Sequelize.STRING(50),
+                    allowNull: false
+                },
                 user_status: {
                     type: Sequelize.ENUM('active', 'inactive'),
                     allowNull: false,
