@@ -268,8 +268,9 @@ let obj = (rootpath) => {
             let name = (req.body.name || '').trim()
             let email = (req.body.email || '').trim().toLowerCase()
             let phone = (req.body.phone || '').trim()            
-            let province = (req.body.province || '').trim()            
-            let birthday = req.body.birthday            
+            let id_number = (req.body.id_number || '').trim()
+            let province = (req.body.province || '').trim().toLowerCase()            
+            let birthday = (req.body.province || '').trim()            
             let password = await fn.setPassword((req.body.password || '').trim())
 
             //sanitize phone number
@@ -304,7 +305,7 @@ let obj = (rootpath) => {
             }
 
             // validate province
-            if(!cst.province.includes(province.toLowerCase())){
+            if(!cst.province.includes(province)){
                 throw getMessage('tidak masuk provinsi yang boleh pinjem duit')
             }
 
@@ -324,6 +325,7 @@ let obj = (rootpath) => {
                     "name": name,
                     "email": email,
                     "phone": phone,
+                    "id_number": id_number,
                     "province": province,
                     "birthday": moment(birthday, "YYYY-MM-DD"),
                     "password": password,                    
