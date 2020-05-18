@@ -5,7 +5,7 @@ module.exports = (app) => {
 
     let aRoutes = [
         // START PROFILE
-        {method: 'post', route: '/request_loan', inits: [], middlewares: [requestController.createRequest], auth: 'login'},
+        {method: 'post', route: '/', inits: [], middlewares: [requestController.createRequest], auth: 'login'},
         // END PROFILE
     ]
     return aRoutes

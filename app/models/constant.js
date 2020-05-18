@@ -1,6 +1,7 @@
 'use strict'
 let obj = (objDB, db, rootpath) => {
     const tbl = require(rootpath + '/config/tables.json')
+    const fn = {}
 
     // BEGIN USER
     fn.getConstant = async (id) => {

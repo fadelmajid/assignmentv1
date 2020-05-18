@@ -34,8 +34,8 @@ let obj = (rootpath) => {
             }
 
             // insert data & get detail
-            let const_id = await req.model('constant').insertConstant(data)
-            let result = await req.model('constant').getConstant(const_id)
+            let cons = await req.model('constant').insertConstant(data)
+            let result = await req.model('constant').getConstant(cons.const_id)
 
             res.success(result)
         } catch(e) {next(e)}
