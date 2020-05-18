@@ -6,9 +6,9 @@ module.exports = {
         return queryInterface.createTable('user_example',
             {
                 user_id: {
-                    type: Sequelize.UUID,
-                    primaryKey: true,    
-                    defaultValue: Sequelize.UUIDV1,
+                    type: Sequelize.INTEGER,
+                    primaryKey: true,
+                    autoIncrement: true,
                     allowNull: false
                 },
                 user_name: {

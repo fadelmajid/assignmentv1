@@ -6,13 +6,17 @@ module.exports = {
         return queryInterface.createTable('request_loan',
             {
                 reqloan_id: {
-                    type: Sequelize.UUID,
-                    defaultValue: Sequelize.UUIDV1,
+                    type: Sequelize.INTEGER,
                     primaryKey: true,
+                    autoIncrement: true,
                     allowNull: false
                 },
                 user_id: {
                     type: Sequelize.INTEGER,
+                    allowNull: false
+                },
+                reqloan_code: {
+                    type: Sequelize.STRING,
                     allowNull: false
                 },
                 reqloan_amount: {
