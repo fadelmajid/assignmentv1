@@ -27,6 +27,13 @@ module.exports = {
         ver_status: "active",
         created_by: 1,
         created_date: "2019-08-03"
+      },
+      {
+        ver_code: "0.9.0",
+        ver_platform: "ios",
+        ver_status: "web",
+        created_by: 1,
+        created_date: "2019-08-03"
       }
     ], {});
   },
