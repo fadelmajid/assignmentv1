@@ -20,7 +20,7 @@ let obj = (rootpath) => {
         } catch(e) {next(e)}
     }
 
-    fn.addConstant = async (req, res, next) => {
+    fn.createConstant = async (req, res, next) => {
         try {
             // Validate username length
             let day_max = req.body.day_max || 0

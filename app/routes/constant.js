@@ -6,7 +6,7 @@ module.exports = (app) => {
     let aRoutes = [
         // START PROFILE
         {method: 'get', route: '/constant/:const_id', inits: [], middlewares: [constantController.getConstant], auth: 'no'},
-        {method: 'post', route: '/constant', inits: [], middlewares: [constantController.addConstant], auth: 'no'},
+        {method: 'post', route: '/constant', inits: [], middlewares: [constantController.createConstant], auth: 'no'},
         // END PROFILE
     ]
     return aRoutes

@@ -1,12 +1,6 @@
 "use strict"
 let obj = (rootpath) => {
     const moment = require('moment')
-    const cst = require(rootpath + '/config/const.json')
-    const config = require(rootpath + '/config/config.json')
-    const multer = require('multer')
-    const path = require('path')
-    const validator = require('validator')
-    const fs = require('fs-extra')
     const fn = {}
 
     // BEGIN PROFILE
