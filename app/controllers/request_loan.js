@@ -21,8 +21,12 @@ let obj = (rootpath) => {
                 throw getMessage('bukan kelipatan 1jt')
             }
 
-            // validate request / day
-            let day = req.model('constant').getConstant()
+            // validate request_loan / day
+            let request_today = req.model('request_loan').count()
+            let constant = req.model('constant').getLastConstant()
+            if(request_today > constant.day){
+                throw getMessage('lebih dari kapasitas')
+            }
 
             let data = {
                 user_id: user_id,
@@ -33,8 +37,33 @@ let obj = (rootpath) => {
             }
 
             // insert data & get detail
-            let reqloan_id = await req.model('request').insertRequest(data)
-            let result = await req.model('request').getRequest(reqloan_id)
+            let reqloan_id = await req.model('request_loan').insertRequest(data)
+            let result = await req.model('request_loan').getRequest(reqloan_id)
+
+            res.success(result)
+        } catch(e) {next(e)}
+    }
+
+    fn.getAllRequest = async (req, res, next) => {
+        try {
+            let validator = require('validator')
+
+            // Validate amount
+            let amount = req.body.amount || 0
+            if (amount < 1000000 || amount > 10000000) {
+                throw getMessage('kurang dari 1jt')
+            }
+
+            let status = (req.status.status || '').trim()
+            if(validator.isEmpty(status)) {
+                throw getMessage('usr002')
+            }
+
+            // insert data & get detail
+            let where = ' AND reqloan_amount = $1 AND reqloan_status LIKE $2 '
+            let data = [amount, status]
+            let order_by = ' created_date DESC '
+            let result = await req.model('request_loan').getAllRequest(where, data, order_by)
 
             res.success(result)
         } catch(e) {next(e)}

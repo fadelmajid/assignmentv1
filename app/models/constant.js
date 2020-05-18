@@ -11,7 +11,15 @@ let obj = (objDB, db, rootpath) => {
         return rows.rows[0]
     }
 
-    fn.insertCOnstant = async (data) => {
+    fn.getLastConstant = async () => {
+        // prepare sql query
+        let sql = "SELECT * FROM " + tbl.constant + " ORDER BY created_date DESC LIMIT 1"
+
+        let rows = await db.query(sql, [])
+        return rows.rows[0]
+    }
+
+    fn.insertConstant = async (data) => {
         let res = await objDB.insert(db, tbl.constant, data, "const_id")
         return res
     }
