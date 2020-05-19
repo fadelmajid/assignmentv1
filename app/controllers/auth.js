@@ -305,29 +305,29 @@ let obj = (rootpath) => {
 
             // validate id number
             if(validator.isEmpty(id_number)) {
-                throw getMessage('tidak boleh kosong')
+                throw getMessage('usr024')
             }
 
-            if(id_number.length < 16){
-                throw getMessage('id tidak valid')
+            if(id_number.length < 16 || id_number.length > 16){
+                throw getMessage('usr025')
             }
 
             // 10 50 24 570890 0002 -> valid example
             let date = parseInt(id_number.substr(6,7))
             if(date > 31 && date - 40 <= 0){
-                throw getMessage('id tidak valid')
+                throw getMessage('usr026')
             }
 
             // validate province
             let code_prv = id_number.substr(0,2)
             if(!cst.code_province[code_prv]){
-                throw getMessage('tidak masuk provinsi yang boleh pinjem duit')
+                throw getMessage('usr027')
             }
 
             // validate age
             let age = moment().diff(birthday, "years")
             if(age < 17 || age >= 80){
-                throw getMessage('belum cukup umur / lewat usia')
+                throw getMessage('usr028')
             }
 
             // get user detail

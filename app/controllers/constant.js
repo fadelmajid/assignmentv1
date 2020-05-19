@@ -8,12 +8,12 @@ let obj = (rootpath) => {
         try {
             let const_id = parseInt(req.params.const_id) || 0
             if (const_id <= 0) {
-                throw getMessage('Tidak boleh 0')
+                throw getMessage('const001')
             }
 
             let result = await req.model('constant').getConstant(const_id)
             if (isEmpty(result)) {
-                throw getMessage('tidak ada data')
+                throw getMessage('const002')
             }
 
             res.success(result)
@@ -25,7 +25,7 @@ let obj = (rootpath) => {
             // Validate username length
             let day_max = req.body.day_max || 0
             if (day_max <= 0) {
-                throw getMessage('tidak boleh 0')
+                throw getMessage('const003')
             }
 
             let data = {

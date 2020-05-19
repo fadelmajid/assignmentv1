@@ -59,6 +59,19 @@
     {"usr020": "ID Instagram is required"},
     {"usr021": "Color is Required"},
     {"usr022": "Address is required"},
+    {"usr024": "Identity number is required."},
+    {"usr025": "Identity number/character must have 16 character."},
+    {"usr026": "Identity number/character is not valid."},
+    {"usr027": "There is no service in your province yet."},
+    {"usr028": "Your age is still not enough or excessive."},
+
+    {"req001": "The amount entered is less than 1 million or more than 10 million."},
+    {"req002": "The amount entered is not a multiple of 1 million."},
+    {"req003": "Sorry, we cannot accept more requests. If you need help, contact CS"},
+
+    {"const001": "Constant ID is required."},
+    {"const002": "Constant data not found"},
+    {"const003": "The number of days entered must be more than 0 "},
 
     {"udt001": "Account Name is required."},
     {"udt002": "Username is required."},

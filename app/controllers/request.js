@@ -14,11 +14,11 @@ let obj = (rootpath) => {
             // Validate amount
             let amount = req.body.amount || 0
             if (amount < 1000000 || amount > 10000000) {
-                throw getMessage('kurang dari 1jt')
+                throw getMessage('req001')
             }
 
-            if (amount%1000000 !== 0) {
-                throw getMessage('bukan kelipatan 1jt')
+            if (amount % 1000000 !== 0) {
+                throw getMessage('req002')
             }
 
             // validate request / day
@@ -29,7 +29,7 @@ let obj = (rootpath) => {
             let request_today = await req.model('request').count(query)
             let constant = await req.model('constant').getLastConstant()
             if(request_today.count > constant.day){
-                throw getMessage('lebih dari kapasitas')
+                throw getMessage('req003')
             }
 
             let data = {
