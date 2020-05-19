@@ -11,23 +11,13 @@ Setup
 6. npm install -g sequelize-cli
 7. npm install -g eslint
 8. sequelize db:migrate (before migrate, please make sure there is a scheme with the same name in postgres. in this example the assignment schema)
+9. sequelize db:seed:all to seed some data
 9. npm start
 10. hit http://localhost:8585
-
-PM2 Setup
-------------
-1. npm install -g pm2
-2. pm2 install pm2-intercom
-3. pm2 start ecosystem.config.js
 
 POSTMAN Collection and Environment
 ------------
 available on folder postman, you can import all the file to postman. (examples of inputs and outputs are available)
-
-CRON - (to delete user data that has changed status, is deleted = true for 3 days)
-------------
-1. cd cronjob
-2. node cron_delete.js / pm2 cron_delete.js
 
 LOGS
 ------------
