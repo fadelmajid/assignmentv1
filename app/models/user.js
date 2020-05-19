@@ -149,7 +149,6 @@ let obj = (objDB, db, rootpath) => {
                 "last_login": now,
                 "created_date": now
             }
-            console.log(data);
             let user_id = await fn.insertUser(data)
             let detailUser = await fn.getUser(user_id.user_id)
 

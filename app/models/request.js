@@ -1,6 +1,7 @@
 'use strict'
 let obj = (objDB, db, rootpath) => {
     const tbl = require(rootpath + '/config/tables.json')
+    const fn = {}
 
     // BEGIN USER
     fn.getRequest = async (id) => {
@@ -8,6 +9,14 @@ let obj = (objDB, db, rootpath) => {
         let sql = "SELECT * FROM " + tbl.request + " WHERE reqloan_id = $1 LIMIT 1"
 
         let rows = await db.query(sql, [id])
+        return rows.rows[0]
+    }
+
+    fn.count = async (data) => {
+        // prepare sql query
+        let sql = "SELECT COUNT(*) FROM " + tbl.request + " WHERE created_date >= $1 AND created_date < $2"
+
+        let rows = await db.query(sql, data)
         return rows.rows[0]
     }
 

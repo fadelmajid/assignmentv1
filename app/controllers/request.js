@@ -22,7 +22,11 @@ let obj = (rootpath) => {
             }
 
             // validate request / day
-            let request_today = req.model('request').count()
+            let query = [
+                moment().format('YYYY-MM-DD'),
+                moment().format('YYYY-MM-DD 23:59:59.000Z')
+            ]
+            let request_today = req.model('request').count(query)
             let constant = req.model('constant').getLastConstant()
             if(request_today > constant.day){
                 throw getMessage('lebih dari kapasitas')
@@ -30,7 +34,7 @@ let obj = (rootpath) => {
 
             let data = {
                 user_id: user_id,
-                reqloan_code: moment().format('HH:mm:ss'),
+                reqloan_code: moment().format('HHmmss'),
                 reqloan_amount: amount,
                 reqloan_status: 'accepted',
                 created_date: moment().format('YYYY-MM-DD HH:mm:ss')
@@ -38,7 +42,7 @@ let obj = (rootpath) => {
 
             // insert data & get detail
             let reqloan_id = await req.model('request').insertRequest(data)
-            let result = await req.model('request').getRequest(reqloan_id)
+            let result = await req.model('request').getRequest(reqloan_id.reqloan_id)
 
             res.success(result)
         } catch(e) {next(e)}
