@@ -26,9 +26,9 @@ let obj = (rootpath) => {
                 moment().format('YYYY-MM-DD'),
                 moment().format('YYYY-MM-DD 23:59:59.000Z')
             ]
-            let request_today = req.model('request').count(query)
-            let constant = req.model('constant').getLastConstant()
-            if(request_today > constant.day){
+            let request_today = await req.model('request').count(query)
+            let constant = await req.model('constant').getLastConstant()
+            if(request_today.count > constant.day){
                 throw getMessage('lebih dari kapasitas')
             }
 
@@ -53,18 +53,11 @@ let obj = (rootpath) => {
             let validator = require('validator')
 
             // Validate amount
-            let amount = req.body.amount || 0
-            if (amount < 1000000 || amount > 10000000) {
-                throw getMessage('kurang dari 1jt')
-            }
-
-            let status = (req.status.status || '').trim()
-            if(validator.isEmpty(status)) {
-                throw getMessage('usr002')
-            }
+            let amount = req.query.amount || 0
+            let status = (req.query.status || 'rejected').trim()
 
             // insert data & get detail
-            let where = ' AND reqloan_amount = $1 AND reqloan_status LIKE $2 '
+            let where = ' AND reqloan_amount = $1 AND reqloan_status = $2 '
             let data = [amount, status]
             let order_by = ' created_date DESC '
             let result = await req.model('request').getAllRequest(where, data, order_by)

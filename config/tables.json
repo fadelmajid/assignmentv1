@@ -7,5 +7,5 @@
     "lock_transaction": "lock_transaction",
     "history_device": "history_device",
     "constant": "constant",
-    "request": "request_loan"
+    "request_loan": "request_loan"
 }
