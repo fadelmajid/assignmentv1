@@ -268,9 +268,8 @@ let obj = (rootpath) => {
             let name = (req.body.name || '').trim()
             let email = (req.body.email || '').trim().toLowerCase()
             let phone = (req.body.phone || '').trim()            
-            let id_number = (req.body.id_number || '').trim()
-            let province = (req.body.province || '').trim().toLowerCase()            
-            let birthday = (req.body.province || '').trim()            
+            let id_number = (req.body.id_number || '').trim()    
+            let birthday = (req.body.birthday || now).trim()            
             let password = await fn.setPassword((req.body.password || '').trim())
 
             //sanitize phone number
@@ -304,8 +303,24 @@ let obj = (rootpath) => {
                 throw getMessage('usr005')
             }
 
+            // validate id number
+            if(validator.isEmpty(id_number)) {
+                throw getMessage('tidak boleh kosong')
+            }
+
+            if(id_number.length < 16){
+                throw getMessage('id tidak valid')
+            }
+
+            // 10 50 24 570890 0002 -> valid example
+            let date = parseInt(id_number.substr(6,7))
+            if(date > 31 && date - 40 <= 0){
+                throw getMessage('id tidak valid')
+            }
+
             // validate province
-            if(!cst.province.includes(province)){
+            let code_prv = id_number.substr(0,2)
+            if(!cst.code_province[code_prv]){
                 throw getMessage('tidak masuk provinsi yang boleh pinjem duit')
             }
 
@@ -326,7 +341,7 @@ let obj = (rootpath) => {
                     "email": email,
                     "phone": phone,
                     "id_number": id_number,
-                    "province": province,
+                    "province": cst.code_province[code_prv],
                     "birthday": moment(birthday, "YYYY-MM-DD"),
                     "password": password,                    
                     "objToken": req.objToken,

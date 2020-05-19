@@ -6,5 +6,11 @@
     "ver_inactive": "inactive",
     "ver_unreleased": "unreleased",
 
-    "province": ["dki jakarta", "jawa barat", "jawa timur", "sumatera utara"]
+    "province": ["dki jakarta", "jawa barat", "jawa timur", "sumatera utara"],
+    "code_province": {
+        "22": "sumatera utara",
+        "31": "dki jakarta",
+        "32": "jawa barat",
+        "35": "jawa timur"
+    }
 }
