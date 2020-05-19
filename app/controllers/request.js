@@ -21,8 +21,8 @@ let obj = (rootpath) => {
                 throw getMessage('bukan kelipatan 1jt')
             }
 
-            // validate request_loan / day
-            let request_today = req.model('request_loan').count()
+            // validate request / day
+            let request_today = req.model('request').count()
             let constant = req.model('constant').getLastConstant()
             if(request_today > constant.day){
                 throw getMessage('lebih dari kapasitas')
@@ -37,8 +37,8 @@ let obj = (rootpath) => {
             }
 
             // insert data & get detail
-            let reqloan_id = await req.model('request_loan').insertRequest(data)
-            let result = await req.model('request_loan').getRequest(reqloan_id)
+            let reqloan_id = await req.model('request').insertRequest(data)
+            let result = await req.model('request').getRequest(reqloan_id)
 
             res.success(result)
         } catch(e) {next(e)}
@@ -63,7 +63,7 @@ let obj = (rootpath) => {
             let where = ' AND reqloan_amount = $1 AND reqloan_status LIKE $2 '
             let data = [amount, status]
             let order_by = ' created_date DESC '
-            let result = await req.model('request_loan').getAllRequest(where, data, order_by)
+            let result = await req.model('request').getAllRequest(where, data, order_by)
 
             res.success(result)
         } catch(e) {next(e)}

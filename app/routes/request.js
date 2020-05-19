@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = (app) => {
-    const requestController = app.controller('request_loan')
+    const requestController = app.controller('request')
 
     let aRoutes = [
         // START PROFILE
