@@ -3,9 +3,9 @@
 module.exports = {
     up: function (queryInterface, Sequelize) {
         // logic for transforming into the new state
-        return queryInterface.createTable('customer_data',
+        return queryInterface.createTable('customer_account_directory',
             {
-                customer_data_id: {
+                customer_account_directory_id: {
                     type: Sequelize.INTEGER,
                     primaryKey: true,
                     autoIncrement: true,
@@ -15,16 +15,12 @@ module.exports = {
                     type: Sequelize.INTEGER,
                     allowNull: false
                 },
-                customer_data_account: {
-                    type: Sequelize.STRING(100),
+                customer_account_id: {
+                    type: Sequelize.INTEGER,
                     allowNull: false
                 },
-                customer_data_username: {
+                customer_account_directory_name: {
                     type: Sequelize.STRING(100),
-                    allowNull: false
-                },
-                customer_data_password: {
-                    type: Sequelize.TEXT(),
                     allowNull: false
                 },
                 created_date: {
@@ -42,13 +38,13 @@ module.exports = {
             })
             .then(function () {
                 return [
-                    queryInterface.addIndex('customer_data', ['customer_id'])
+                    queryInterface.addIndex('customer_account_directory', ['customer_id'])
                 ]
             });
     },
 
     down: function (queryInterface, Sequelize) {
         // logic for reverting the changes
-        return queryInterface.dropTable('customer_data');
+        return queryInterface.dropTable('customer_account_directory');
     }
 }

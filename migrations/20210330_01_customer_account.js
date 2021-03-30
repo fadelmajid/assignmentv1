@@ -5,7 +5,7 @@ module.exports = {
         // logic for transforming into the new state
         return queryInterface.createTable('customer_account',
             {
-                customer_customer_account_id: {
+                customer_account_id: {
                     type: Sequelize.INTEGER,
                     primaryKey: true,
                     autoIncrement: true,
@@ -16,7 +16,7 @@ module.exports = {
                     allowNull: false
                 },
                 customer_account_number: {
-                    type: Sequelize.INTEGER,
+                    type: Sequelize.STRING(100),
                     allowNull: false
                 },
                 customer_account_balance: {
@@ -51,7 +51,8 @@ module.exports = {
             })
             .then(function () {
                 return [
-                    queryInterface.addIndex('customer_account', ['customer_id'])
+                    queryInterface.addIndex('customer_account', ['customer_id']),
+                    queryInterface.addIndex('customer_account', ['customer_account_number'])
                 ]
             });
     },
