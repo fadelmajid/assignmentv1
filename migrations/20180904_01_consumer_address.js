@@ -3,15 +3,15 @@
 module.exports = {
     up: function (queryInterface, Sequelize) {
         // logic for transforming into the new state
-        return queryInterface.createTable('user_address',
+        return queryInterface.createTable('consumer_address',
             {
-                uadd_id: {
+                consumer_add_id: {
                     type: Sequelize.INTEGER,
                     primaryKey: true,
                     autoIncrement: true,
                     allowNull: false
                 },
-                user_id: {
+                consumer_id: {
                     type: Sequelize.INTEGER,
                     allowNull: false
                 },
@@ -23,19 +23,19 @@ module.exports = {
                     type: Sequelize.INTEGER,
                     allowNull: false,
                 },
-                uadd_title: {
+                consumer_add_title: {
                     type: Sequelize.STRING(100),
                     allowNull: false
                 },
-                uadd_person: {
+                consumer_add_person: {
                     type: Sequelize.STRING(50),
                     allowNull: false
                 },
-                uadd_phone: {
+                consumer_add_phone: {
                     type: Sequelize.STRING(20),
                     allowNull: false
                 },
-                uadd_street: {
+                consumer_add_street: {
                     type: Sequelize.TEXT(),
                     allowNull: false
                 },
@@ -54,15 +54,15 @@ module.exports = {
             })
             .then(function () {
                 return [
-                    queryInterface.addIndex('user_address', ['user_id']),
-                    queryInterface.addIndex('user_address', ['prov_id']),
-                    queryInterface.addIndex('user_address', ['city_id'])
+                    queryInterface.addIndex('consumer_address', ['consumer_id']),
+                    queryInterface.addIndex('consumer_address', ['prov_id']),
+                    queryInterface.addIndex('consumer_address', ['city_id'])
                 ]
             });
     },
 
     down: function (queryInterface, Sequelize) {
         // logic for reverting the changes
-        return queryInterface.dropTable('user_address');
+        return queryInterface.dropTable('consumer_address');
     }
 }

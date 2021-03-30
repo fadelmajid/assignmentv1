@@ -3,34 +3,33 @@
 module.exports = {
     up: function (queryInterface, Sequelize) {
         // logic for transforming into the new state
-        return queryInterface.createTable('request_loan',
+        return queryInterface.createTable('consumer_data',
             {
-                reqloan_id: {
+                consumer_data_id: {
                     type: Sequelize.INTEGER,
                     primaryKey: true,
                     autoIncrement: true,
                     allowNull: false
                 },
-                user_id: {
+                consumer_id: {
                     type: Sequelize.INTEGER,
                     allowNull: false
                 },
-                reqloan_code: {
-                    type: Sequelize.STRING,
+                consumer_data_account: {
+                    type: Sequelize.STRING(100),
                     allowNull: false
                 },
-                reqloan_amount: {
-                    type: Sequelize.INTEGER,
+                consumer_data_username: {
+                    type: Sequelize.STRING(100),
                     allowNull: false
                 },
-                reqloan_status: {
-                    type: Sequelize.ENUM('accepted', 'rejected'),
-                    allowNull: false,
-                    defaultValue: 'rejected'
+                consumer_data_password: {
+                    type: Sequelize.TEXT(),
+                    allowNull: false
                 },
                 created_date: {
                     type: Sequelize.DATE,
-                    allowNull: true
+                    allowNull: false
                 },
                 updated_date: {
                     type: Sequelize.DATE,
@@ -43,13 +42,13 @@ module.exports = {
             })
             .then(function () {
                 return [
-                    queryInterface.addIndex('request_loan', ['user_id']),
+                    queryInterface.addIndex('consumer_data', ['consumer_id'])
                 ]
             });
     },
 
     down: function (queryInterface, Sequelize) {
         // logic for reverting the changes
-        return queryInterface.dropTable('request_loan');
+        return queryInterface.dropTable('consumer_data');
     }
 }

@@ -5,14 +5,14 @@
 module.exports = {
     up: function (queryInterface, Sequelize) {
         // logic for transforming into the new state
-        return queryInterface.addColumn('user_example', 'user_password', {
+        return queryInterface.addColumn('consumer', 'consumer_password', {
             type: Sequelize.TEXT,
             allowNull: true,
-            after: "user_name",
+            after: "consumer_name",
         })
     },
     down: function (queryInterface, Sequelize) {
         // logic for reverting the changes
-        return queryInterface.removeColumn('user_example', 'user_password')
+        return queryInterface.removeColumn('consumer', 'consumer_password')
     }
 }

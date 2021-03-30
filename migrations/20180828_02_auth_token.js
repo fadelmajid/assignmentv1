@@ -11,7 +11,7 @@ module.exports = {
                     autoIncrement: true,
                     allowNull: false
                 },
-                user_id: {
+                consumer_id: {
                     type: Sequelize.INTEGER,
                     allowNull: true,
                 },
@@ -55,7 +55,7 @@ module.exports = {
             })
             .then(function () {
                 return [
-                    queryInterface.addIndex('auth_token', ['user_id']),
+                    queryInterface.addIndex('auth_token', ['consumer_id']),
                     queryInterface.addIndex('auth_token', ['atoken_device', 'atoken_status']),
                     queryInterface.addIndex('auth_token', ['atoken_refresh', 'atoken_status']),
                     queryInterface.addIndex('auth_token', ['atoken_access', 'atoken_status', 'expired_date'])

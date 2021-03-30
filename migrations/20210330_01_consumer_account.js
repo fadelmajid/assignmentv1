@@ -3,33 +3,42 @@
 module.exports = {
     up: function (queryInterface, Sequelize) {
         // logic for transforming into the new state
-        return queryInterface.createTable('user_data',
+        return queryInterface.createTable('consumer_account',
             {
-                udata_id: {
+                consumer_consumer_account_id: {
                     type: Sequelize.INTEGER,
                     primaryKey: true,
                     autoIncrement: true,
                     allowNull: false
                 },
-                user_id: {
+                consumer_id: {
                     type: Sequelize.INTEGER,
                     allowNull: false
                 },
-                udata_account: {
-                    type: Sequelize.STRING(100),
+                consumer_account_number: {
+                    type: Sequelize.INTEGER,
                     allowNull: false
                 },
-                udata_username: {
-                    type: Sequelize.STRING(100),
-                    allowNull: false
+                consumer_account_balance: {
+                    type: Sequelize.INTEGER,
+                    allowNull: true
                 },
-                udata_password: {
-                    type: Sequelize.TEXT(),
-                    allowNull: false
+                consumer_account_name: {
+                    type: Sequelize.STRING(100),
+                    allowNull: true
+                },
+                consumer_account_code: {
+                    type: Sequelize.STRING(7),
+                    allowNull: true
+                },
+                consumer_account_status: {
+                    type: Sequelize.ENUM('active', 'inactive'),
+                    allowNull: false,
+                    defaultValue: 'active'
                 },
                 created_date: {
                     type: Sequelize.DATE,
-                    allowNull: false
+                    allowNull: true
                 },
                 updated_date: {
                     type: Sequelize.DATE,
@@ -42,13 +51,13 @@ module.exports = {
             })
             .then(function () {
                 return [
-                    queryInterface.addIndex('user_data', ['user_id'])
+                    queryInterface.addIndex('consumer_account', ['consumer_id'])
                 ]
             });
     },
 
     down: function (queryInterface, Sequelize) {
         // logic for reverting the changes
-        return queryInterface.dropTable('user_data');
+        return queryInterface.dropTable('consumer_account');
     }
 }

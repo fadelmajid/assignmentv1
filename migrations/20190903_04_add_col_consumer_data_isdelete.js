@@ -5,7 +5,7 @@
 module.exports = {
     up: function (queryInterface, Sequelize) {
         // logic for transforming into the new state
-        return queryInterface.addColumn('user_data', 'is_deleted', {
+        return queryInterface.addColumn('consumer_data', 'is_deleted', {
             type: Sequelize.BOOLEAN,
             allowNull: false,
             defaultValue: false,
@@ -14,6 +14,6 @@ module.exports = {
     },
     down: function (queryInterface, Sequelize) {
         // logic for reverting the changes
-        return queryInterface.removeColumn('user_data', 'is_deleted')
+        return queryInterface.removeColumn('consumer_data', 'is_deleted')
     }
 }

@@ -1,9 +1,9 @@
 {
-    "user": "user_example",
+    "user": "consumer_example",
     "auth_token": "auth_token",    
     "app_version": "app_version",
-    "user_address": "user_address",
-    "user_data": "user_data",
+    "consumer_address": "consumer_address",
+    "consumer_data": "consumer_data",
     "lock_transaction": "lock_transaction",
     "history_device": "history_device",
     "constant": "constant",

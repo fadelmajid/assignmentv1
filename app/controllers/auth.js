@@ -46,10 +46,10 @@ let obj = (rootpath) => {
             }
 
             // if logged in select user information
-            if(detailToken.user_id > 0) {
+            if(detailToken.consumer_id > 0) {
 
                 // get user detail
-                let detailUser = await req.model('user').getUser(detailToken.user_id)
+                let detailUser = await req.model('user').getUser(detailToken.consumer_id)
                 // if user not found, throw error
                 if(isEmpty(detailUser)) {
                     // inactive token by device id
@@ -58,7 +58,7 @@ let obj = (rootpath) => {
                 }
 
                 // if user is not active
-                if(detailUser.user_status != 'active') {
+                if(detailUser.consumer_status != 'active') {
                     // inactive token by device id
                     await req.model('auth').setTokenInactive(detailToken.atoken_device)
                     throw getMessage('auth010')
@@ -99,12 +99,12 @@ let obj = (rootpath) => {
             }
 
             // validate user login
-            if(detailToken.user_id <= 0) {
+            if(detailToken.consumer_id <= 0) {
                 throw getMessage('auth009')
             }
 
             // get user detail
-            let detailUser = await req.model('user').getUser(detailToken.user_id)
+            let detailUser = await req.model('user').getUser(detailToken.consumer_id)
             // if user not found, throw error
             if(isEmpty(detailUser)) {
                 // inactive token by device id
@@ -113,14 +113,14 @@ let obj = (rootpath) => {
             }
 
             // if user is not active
-            if(detailUser.user_status != 'active') {
+            if(detailUser.consumer_status != 'active') {
                 // inactive token by device id
                 await req.model('auth').setTokenInactive(detailToken.atoken_device)
                 throw getMessage('auth010')
             }
 
             // set activity
-            await req.model('user').updateUser(detailUser.user_id, {"last_activity": now})
+            await req.model('user').updateUser(detailUser.consumer_id, {"last_activity": now})
 
             // set user & token into request object
             req.objUser = detailUser
@@ -195,13 +195,13 @@ let obj = (rootpath) => {
             }
 
             // validate password
-            let password = await fn.validPassword((req.body.password || '').trim(), detailUser.user_password)
+            let password = await fn.validPassword((req.body.password || '').trim(), detailUser.consumer_password)
             if(password == false){
                 throw getMessage('auth013')
             }
 
             // if user is not active
-            if(detailUser.user_status != 'active') {
+            if(detailUser.consumer_status != 'active') {
                 throw getMessage('auth010')
             }
 
@@ -229,12 +229,12 @@ let obj = (rootpath) => {
             await req.model('auth').setTokenInactive(req.objToken.atoken_device)
 
             //init user id and platform
-            let user_id = parseInt(req.objToken.user_id) || 0
-            if(user_id <= 0) {
+            let consumer_id = parseInt(req.objToken.consumer_id) || 0
+            if(consumer_id <= 0) {
                 throw getMessage("usr006")
             }
-            let user_platform = req.objToken.atoken_platform || ''
-            if(validator.isEmpty(user_platform)) {
+            let consumer_platform = req.objToken.atoken_platform || ''
+            if(validator.isEmpty(consumer_platform)) {
                 throw getMessage("auth015")
             }
 
