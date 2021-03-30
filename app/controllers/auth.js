@@ -49,7 +49,7 @@ let obj = (rootpath) => {
             if(detailToken.consumer_id > 0) {
 
                 // get user detail
-                let detailUser = await req.model('user').getUser(detailToken.consumer_id)
+                let detailUser = await req.model('consumer').getUser(detailToken.consumer_id)
                 // if user not found, throw error
                 if(isEmpty(detailUser)) {
                     // inactive token by device id
@@ -104,7 +104,7 @@ let obj = (rootpath) => {
             }
 
             // get user detail
-            let detailUser = await req.model('user').getUser(detailToken.consumer_id)
+            let detailUser = await req.model('consumer').getUser(detailToken.consumer_id)
             // if user not found, throw error
             if(isEmpty(detailUser)) {
                 // inactive token by device id
@@ -120,7 +120,7 @@ let obj = (rootpath) => {
             }
 
             // set activity
-            await req.model('user').updateUser(detailUser.consumer_id, {"last_activity": now})
+            await req.model('consumer').updateUser(detailUser.consumer_id, {"last_activity": now})
 
             // set user & token into request object
             req.objUser = detailUser
@@ -187,7 +187,7 @@ let obj = (rootpath) => {
             }
 
             // get user detail
-            let detailUser = await req.model('user').getUserPhone(phone)
+            let detailUser = await req.model('consumer').getUserPhone(phone)
             // if user not found, throw error
             if(isEmpty(detailUser)) {
                 // frontend must detect this error code and redirect to register page
@@ -210,7 +210,7 @@ let obj = (rootpath) => {
                 'detailUser': detailUser,
                 'objToken': req.objToken,
             }
-            let is_logged_in = await req.model('user').login(dataLogin)
+            let is_logged_in = await req.model('consumer').login(dataLogin)
 
             if(is_logged_in) {
                 res.success(getMessage('success'))
@@ -298,7 +298,7 @@ let obj = (rootpath) => {
                 throw getMessage('usr004')
             }
             // validate duplicate email
-            let dupeEmail = await req.model('user').getUserEmail(email)
+            let dupeEmail = await req.model('consumer').getUserEmail(email)
             if(isEmpty(dupeEmail) == false) {
                 throw getMessage('usr005')
             }
@@ -331,7 +331,7 @@ let obj = (rootpath) => {
             }
 
             // get user detail
-            let detailUser = await req.model('user').getUserPhone(phone)
+            let detailUser = await req.model('consumer').getUserPhone(phone)
 
             // if user not found, then register
             if(isEmpty(detailUser)) {
@@ -346,7 +346,7 @@ let obj = (rootpath) => {
                     "password": password,                    
                     "objToken": req.objToken,
                 }
-                let detailUser = await req.model('user').registration(data)
+                let detailUser = await req.model('consumer').registration(data)
                 req.userobjUser = detailUser
             }else{
                 throw getMessage('auth016')

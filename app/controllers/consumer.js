@@ -11,7 +11,7 @@ let obj = (rootpath) => {
                 throw getMessage('usr006')
             }
 
-            let result = await req.model('user').getUser(consumer_id)
+            let result = await req.model('consumer').getUser(consumer_id)
             if (isEmpty(result)) {
                 throw getMessage('usr007')
             }
@@ -37,7 +37,7 @@ let obj = (rootpath) => {
                 throw getMessage('usr018')
             }
 
-            let detailUser = await req.model('user').getUser(consumer_id)
+            let detailUser = await req.model('consumer').getUser(consumer_id)
             if (isEmpty(detailUser)) {
                 throw getMessage('usr007')
             }
@@ -61,14 +61,14 @@ let obj = (rootpath) => {
                 throw getMessage('usr004')
             }
             // validate if email exists and not belong to logged in user
-            let dupEmail = await req.model('user').getUserEmail(data.consumer_email)
+            let dupEmail = await req.model('consumer').getUserEmail(data.consumer_email)
             if (dupEmail && dupEmail.consumer_id !== consumer_id) {
                 throw getMessage('usr005')
             }
 
             // insert data & get detail
-            await req.model('user').updateUser(consumer_id, data)
-            let result = await req.model('user').getUser(consumer_id)
+            await req.model('consumer').updateUser(consumer_id, data)
+            let result = await req.model('consumer').getUser(consumer_id)
 
             // don't show password
             delete result.consumer_password
@@ -90,7 +90,7 @@ let obj = (rootpath) => {
                 throw getMessage('udt001')
             }
             // validate if address exists
-            let result = await req.model('user').getUserData(udata)
+            let result = await req.model('consumer').getUserData(udata)
             if (!result) {
                 throw getMessage('udt004')
             }
@@ -115,7 +115,7 @@ let obj = (rootpath) => {
             let where = ' AND is_deleted = $1 AND consumer_id = $2 AND (consumer_data_username LIKE $3 OR consumer_data_account LIKE $4) '
             let data = [false, consumer_id, keyword, keyword]
             let order_by = ' consumer_data_id ASC '
-            let result = await req.model('user').getAllUserData(where, data, order_by)
+            let result = await req.model('consumer').getAllUserData(where, data, order_by)
 
             res.success(result)
         } catch(e) {next(e)}
@@ -135,7 +135,7 @@ let obj = (rootpath) => {
             let order_by = ' consumer_data_id ASC '
             let page_no = req.query.page || 0
             let no_per_page = req.query.perpage || 0
-            let result = await req.model('user').getPagingUserData(
+            let result = await req.model('consumer').getPagingUserData(
                 where,
                 data,
                 order_by,
@@ -185,8 +185,8 @@ let obj = (rootpath) => {
                 created_date : now
             }
 
-            let consumer_data_id = await req.model('user').insertUserData(data)
-            let result = await req.model('user').getUserData(consumer_data_id.consumer_data_id)
+            let consumer_data_id = await req.model('consumer').insertUserData(data)
+            let result = await req.model('consumer').getUserData(consumer_data_id.consumer_data_id)
 
             res.success(result)
         } catch(e) {next(e)}
@@ -203,7 +203,7 @@ let obj = (rootpath) => {
                 throw getMessage('udt001')
             }
             // validate if data exists
-            let userdata = await req.model('user').getUserData(consumer_data_id)
+            let userdata = await req.model('consumer').getUserData(consumer_data_id)
             if (!userdata) {
                 throw getMessage('udt004')
             }
@@ -219,8 +219,8 @@ let obj = (rootpath) => {
                 updated_date: moment().format('YYYY-MM-DD HH:mm:ss')
             }
 
-            await req.model('user').updateUserData(consumer_data_id, data)
-            let result = await req.model('user').getUserData(consumer_data_id)
+            await req.model('consumer').updateUserData(consumer_data_id, data)
+            let result = await req.model('consumer').getUserData(consumer_data_id)
             res.success(result)
         } catch(e) {next(e)}
     }
@@ -236,7 +236,7 @@ let obj = (rootpath) => {
                 throw getMessage('udt001')
             }
             // validate if userdata exists
-            let userdata = await req.model('user').getUserData(consumer_data_id)
+            let userdata = await req.model('consumer').getUserData(consumer_data_id)
             if (!userdata) {
                 throw getMessage('udt004')
             }
@@ -245,12 +245,12 @@ let obj = (rootpath) => {
                 throw getMessage('udt006')
             }
             // validate userdata records must be more than 1 before delete
-            let all_userdata = await req.model('user').getAllUserData(' AND is_deleted = $1 AND consumer_id = $2 ', [false, consumer_id])
+            let all_userdata = await req.model('consumer').getAllUserData(' AND is_deleted = $1 AND consumer_id = $2 ', [false, consumer_id])
             if (all_userdata.length < 1) {
                 throw getMessage('udt009')
             }
 
-            await req.model('user').deleteUserData(consumer_data_id)
+            await req.model('consumer').deleteUserData(consumer_data_id)
             res.success(getMessage('udt008'))
         } catch (e) {next(e)}
     }
@@ -266,7 +266,7 @@ let obj = (rootpath) => {
                 throw getMessage('udt001')
             }
             // validate if userdata exists
-            let userdata = await req.model('user').getUserData(consumer_data_id)
+            let userdata = await req.model('consumer').getUserData(consumer_data_id)
             if (!userdata) {
                 throw getMessage('udt004')
             }
@@ -279,12 +279,12 @@ let obj = (rootpath) => {
                 throw getMessage('udt010')
             }
             // validate userdata records must be more than 1 before delete
-            let all_userdata = await req.model('user').getAllUserData(' AND is_deleted = $1 AND consumer_id = $2 ', [false, consumer_id])
+            let all_userdata = await req.model('consumer').getAllUserData(' AND is_deleted = $1 AND consumer_id = $2 ', [false, consumer_id])
             if (all_userdata.length < 1) {
                 throw getMessage('udt009')
             }
 
-            await req.model('user').deleteSoftUserData(consumer_data_id, {is_deleted : true})
+            await req.model('consumer').deleteSoftUserData(consumer_data_id, {is_deleted : true})
             res.success(getMessage('udt008'))
         } catch (e) {next(e)}
     }

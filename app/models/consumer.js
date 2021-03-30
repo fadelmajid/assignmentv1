@@ -10,7 +10,7 @@ let obj = (objDB, db, rootpath) => {
     // BEGIN USER
     fn.getUser = async (id) => {
         // prepare sql query
-        let sql = "SELECT * FROM " + tbl.user + " WHERE consumer_id = $1 LIMIT 1"
+        let sql = "SELECT * FROM " + tbl.consumer + " WHERE consumer_id = $1 LIMIT 1"
 
         let rows = await db.query(sql, [id])
         return rows.rows[0]
@@ -18,7 +18,7 @@ let obj = (objDB, db, rootpath) => {
 
     fn.getUserEmail = async (email) => {
         // prepare sql query
-        let sql = "SELECT * FROM " + tbl.user + " WHERE consumer_email = $1 LIMIT 1"
+        let sql = "SELECT * FROM " + tbl.consumer + " WHERE consumer_email = $1 LIMIT 1"
 
         let row = await db.query(sql, [email])
         return row.rows[0]
@@ -26,7 +26,7 @@ let obj = (objDB, db, rootpath) => {
 
     fn.getUserPhone = async (phone) => {
         // prepare sql query
-        let sql = "SELECT * FROM " + tbl.user + " WHERE consumer_phone = $1 ORDER BY consumer_id DESC LIMIT 1"
+        let sql = "SELECT * FROM " + tbl.consumer + " WHERE consumer_phone = $1 ORDER BY consumer_id DESC LIMIT 1"
 
         let rows = await db.query(sql, [phone])
         return rows.rows[0]
@@ -34,32 +34,32 @@ let obj = (objDB, db, rootpath) => {
 
     fn.getUserCode = async (code) => {
         // prepare sql query
-        let sql = "SELECT * FROM " + tbl.user + " WHERE consumer_code = $1 LIMIT 1"
+        let sql = "SELECT * FROM " + tbl.consumer + " WHERE consumer_code = $1 LIMIT 1"
 
         let rows = await db.query(sql, [code])
         return rows.rows[0]
     }
 
     fn.getAllUser = async (where = '', data = [], order_by = " consumer_id ASC ", limit = 0) => {
-        let sql = "SELECT * FROM " + tbl.user + " WHERE 1=1 " + where + " ORDER BY " + order_by
+        let sql = "SELECT * FROM " + tbl.consumer + " WHERE 1=1 " + where + " ORDER BY " + order_by
 
         let result = await objDB.getAll(db, sql, data, limit)
         return result
     }
 
     fn.insertUser = async (data) => {
-        let res = await objDB.insert(db, tbl.user, data, "consumer_id")
+        let res = await objDB.insert(db, tbl.consumer, data, "consumer_id")
         return res
     }
 
     fn.updateUser = async (id, data) => {
         let where = {'cond': 'consumer_id = $1', 'bind': [id]}
-        return await objDB.update(db, tbl.user, where, data)
+        return await objDB.update(db, tbl.consumer, where, data)
     }
 
     fn.uploadImage = async (id, data) => {
         let where = {'cond': 'consumer_id = $1', 'bind': [id]}
-        return await objDB.update(db, tbl.user, where, data)
+        return await objDB.update(db, tbl.consumer, where, data)
     }
 
     fn.generateRefCode = (string) => {
