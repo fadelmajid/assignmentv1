@@ -46,10 +46,10 @@ let obj = (rootpath) => {
             }
 
             // if logged in select user information
-            if(detailToken.consumer_id > 0) {
+            if(detailToken.customer_id > 0) {
 
                 // get user detail
-                let detailUser = await req.model('consumer').getUser(detailToken.consumer_id)
+                let detailUser = await req.model('customer').getUser(detailToken.customer_id)
                 // if user not found, throw error
                 if(isEmpty(detailUser)) {
                     // inactive token by device id
@@ -58,7 +58,7 @@ let obj = (rootpath) => {
                 }
 
                 // if user is not active
-                if(detailUser.consumer_status != 'active') {
+                if(detailUser.customer_status != 'active') {
                     // inactive token by device id
                     await req.model('auth').setTokenInactive(detailToken.atoken_device)
                     throw getMessage('auth010')
@@ -99,12 +99,12 @@ let obj = (rootpath) => {
             }
 
             // validate user login
-            if(detailToken.consumer_id <= 0) {
+            if(detailToken.customer_id <= 0) {
                 throw getMessage('auth009')
             }
 
             // get user detail
-            let detailUser = await req.model('consumer').getUser(detailToken.consumer_id)
+            let detailUser = await req.model('customer').getUser(detailToken.customer_id)
             // if user not found, throw error
             if(isEmpty(detailUser)) {
                 // inactive token by device id
@@ -113,14 +113,14 @@ let obj = (rootpath) => {
             }
 
             // if user is not active
-            if(detailUser.consumer_status != 'active') {
+            if(detailUser.customer_status != 'active') {
                 // inactive token by device id
                 await req.model('auth').setTokenInactive(detailToken.atoken_device)
                 throw getMessage('auth010')
             }
 
             // set activity
-            await req.model('consumer').updateUser(detailUser.consumer_id, {"last_activity": now})
+            await req.model('customer').updateUser(detailUser.customer_id, {"last_activity": now})
 
             // set user & token into request object
             req.objUser = detailUser
@@ -187,7 +187,7 @@ let obj = (rootpath) => {
             }
 
             // get user detail
-            let detailUser = await req.model('consumer').getUserPhone(phone)
+            let detailUser = await req.model('customer').getUserPhone(phone)
             // if user not found, throw error
             if(isEmpty(detailUser)) {
                 // frontend must detect this error code and redirect to register page
@@ -195,13 +195,13 @@ let obj = (rootpath) => {
             }
 
             // validate password
-            let password = await fn.validPassword((req.body.password || '').trim(), detailUser.consumer_password)
+            let password = await fn.validPassword((req.body.password || '').trim(), detailUser.customer_password)
             if(password == false){
                 throw getMessage('auth013')
             }
 
             // if user is not active
-            if(detailUser.consumer_status != 'active') {
+            if(detailUser.customer_status != 'active') {
                 throw getMessage('auth010')
             }
 
@@ -210,7 +210,7 @@ let obj = (rootpath) => {
                 'detailUser': detailUser,
                 'objToken': req.objToken,
             }
-            let is_logged_in = await req.model('consumer').login(dataLogin)
+            let is_logged_in = await req.model('customer').login(dataLogin)
 
             if(is_logged_in) {
                 res.success(getMessage('success'))
@@ -229,12 +229,12 @@ let obj = (rootpath) => {
             await req.model('auth').setTokenInactive(req.objToken.atoken_device)
 
             //init user id and platform
-            let consumer_id = parseInt(req.objToken.consumer_id) || 0
-            if(consumer_id <= 0) {
+            let customer_id = parseInt(req.objToken.customer_id) || 0
+            if(customer_id <= 0) {
                 throw getMessage("usr006")
             }
-            let consumer_platform = req.objToken.atoken_platform || ''
-            if(validator.isEmpty(consumer_platform)) {
+            let customer_platform = req.objToken.atoken_platform || ''
+            if(validator.isEmpty(customer_platform)) {
                 throw getMessage("auth015")
             }
 
@@ -298,7 +298,7 @@ let obj = (rootpath) => {
                 throw getMessage('usr004')
             }
             // validate duplicate email
-            let dupeEmail = await req.model('consumer').getUserEmail(email)
+            let dupeEmail = await req.model('customer').getUserEmail(email)
             if(isEmpty(dupeEmail) == false) {
                 throw getMessage('usr005')
             }
@@ -331,7 +331,7 @@ let obj = (rootpath) => {
             }
 
             // get user detail
-            let detailUser = await req.model('consumer').getUserPhone(phone)
+            let detailUser = await req.model('customer').getUserPhone(phone)
 
             // if user not found, then register
             if(isEmpty(detailUser)) {
@@ -346,7 +346,7 @@ let obj = (rootpath) => {
                     "password": password,                    
                     "objToken": req.objToken,
                 }
-                let detailUser = await req.model('consumer').registration(data)
+                let detailUser = await req.model('customer').registration(data)
                 req.userobjUser = detailUser
             }else{
                 throw getMessage('auth016')

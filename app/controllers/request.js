@@ -6,8 +6,8 @@ let obj = (rootpath) => {
     // BEGIN PROFILE
     fn.createRequest = async (req, res, next) => {
         try {
-            let consumer_id = parseInt(req.objUser.consumer_id) || 0
-            if (consumer_id <= 0) {
+            let customer_id = parseInt(req.objUser.customer_id) || 0
+            if (customer_id <= 0) {
                 throw getMessage('usr006')
             }
 
@@ -33,7 +33,7 @@ let obj = (rootpath) => {
             }
 
             let data = {
-                consumer_id: consumer_id,
+                customer_id: customer_id,
                 reqloan_code: moment().format('HHmmss'),
                 reqloan_amount: amount,
                 reqloan_status: 'accepted',

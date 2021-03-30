@@ -3,27 +3,27 @@
 module.exports = {
     up: function (queryInterface, Sequelize) {
         // logic for transforming into the new state
-        return queryInterface.createTable('consumer_data',
+        return queryInterface.createTable('customer_data',
             {
-                consumer_data_id: {
+                customer_data_id: {
                     type: Sequelize.INTEGER,
                     primaryKey: true,
                     autoIncrement: true,
                     allowNull: false
                 },
-                consumer_id: {
+                customer_id: {
                     type: Sequelize.INTEGER,
                     allowNull: false
                 },
-                consumer_data_account: {
+                customer_data_account: {
                     type: Sequelize.STRING(100),
                     allowNull: false
                 },
-                consumer_data_username: {
+                customer_data_username: {
                     type: Sequelize.STRING(100),
                     allowNull: false
                 },
-                consumer_data_password: {
+                customer_data_password: {
                     type: Sequelize.TEXT(),
                     allowNull: false
                 },
@@ -42,13 +42,13 @@ module.exports = {
             })
             .then(function () {
                 return [
-                    queryInterface.addIndex('consumer_data', ['consumer_id'])
+                    queryInterface.addIndex('customer_data', ['customer_id'])
                 ]
             });
     },
 
     down: function (queryInterface, Sequelize) {
         // logic for reverting the changes
-        return queryInterface.dropTable('consumer_data');
+        return queryInterface.dropTable('customer_data');
     }
 }

@@ -3,43 +3,43 @@
 module.exports = {
     up: function (queryInterface, Sequelize) {
         // logic for transforming into the new state
-        return queryInterface.createTable('consumer',
+        return queryInterface.createTable('customer',
             {
-                consumer_id: {
+                customer_id: {
                     type: Sequelize.INTEGER,
                     primaryKey: true,
                     autoIncrement: true,
                     allowNull: false
                 },
-                consumer_name: {
+                customer_name: {
                     type: Sequelize.STRING(100),
                     allowNull: true
                 },
-                consumer_code: {
+                customer_code: {
                     type: Sequelize.STRING(7),
                     allowNull: true
                 },
-                consumer_email: {
+                customer_email: {
                     type: Sequelize.STRING(100),
                     allowNull: true,
                 },
-                consumer_phone: {
+                customer_phone: {
                     type: Sequelize.STRING(50),
                     allowNull: false
                 },
-                consumer_identification_id: {
+                customer_identification_id: {
                     type: Sequelize.STRING(100),
                     allowNull: false
                 },
-                consumer_birthday: {
+                customer_birthday: {
                     type: Sequelize.DATE,
                     allowNull: false,
                 },
-                consumer_province: {
+                customer_province: {
                     type: Sequelize.STRING(50),
                     allowNull: false
                 },
-                consumer_status: {
+                customer_status: {
                     type: Sequelize.ENUM('active', 'inactive'),
                     allowNull: false,
                     defaultValue: 'active'
@@ -67,15 +67,15 @@ module.exports = {
             })
             .then(function () {
                 return [
-                    queryInterface.addIndex('consumer', ['consumer_email']),
-                    queryInterface.addIndex('consumer', ['consumer_phone']),
-                    queryInterface.addIndex('consumer', ['consumer_code'])
+                    queryInterface.addIndex('customer', ['customer_email']),
+                    queryInterface.addIndex('customer', ['customer_phone']),
+                    queryInterface.addIndex('customer', ['customer_code'])
                 ]
             });
     },
 
     down: function (queryInterface, Sequelize) {
         // logic for reverting the changes
-        return queryInterface.dropTable('consumer');
+        return queryInterface.dropTable('customer');
     }
 }

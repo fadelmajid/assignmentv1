@@ -39,7 +39,7 @@ let obj = (objDB, db, rootpath) => {
     }
 
     //get all auth token
-    fn.getAllAuthToken = async (where = '', data = [], order_by = 'consumer_id ASC', limit = 0) => {
+    fn.getAllAuthToken = async (where = '', data = [], order_by = 'customer_id ASC', limit = 0) => {
         let sql = "SELECT * FROM " + tbl.auth_token + " WHERE 1=1 " + where + " ORDER BY " + order_by
         let result = await objDB.getAll(db, sql, data, limit)
         return result
@@ -78,7 +78,7 @@ let obj = (objDB, db, rootpath) => {
 
         // insert new token
         let data = {
-            "consumer_id": "0",
+            "customer_id": "0",
             "atoken_device": device_id,
             "atoken_platform": platform,
             "atoken_access": access_token,

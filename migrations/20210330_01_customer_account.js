@@ -3,45 +3,42 @@
 module.exports = {
     up: function (queryInterface, Sequelize) {
         // logic for transforming into the new state
-        return queryInterface.createTable('consumer_address',
+        return queryInterface.createTable('customer_account',
             {
-                consumer_add_id: {
+                customer_customer_account_id: {
                     type: Sequelize.INTEGER,
                     primaryKey: true,
                     autoIncrement: true,
                     allowNull: false
                 },
-                consumer_id: {
+                customer_id: {
                     type: Sequelize.INTEGER,
                     allowNull: false
                 },
-                prov_id: {
+                customer_account_number: {
                     type: Sequelize.INTEGER,
                     allowNull: false
                 },
-                city_id: {
+                customer_account_balance: {
                     type: Sequelize.INTEGER,
-                    allowNull: false,
+                    allowNull: true
                 },
-                consumer_add_title: {
+                customer_account_name: {
                     type: Sequelize.STRING(100),
-                    allowNull: false
+                    allowNull: true
                 },
-                consumer_add_person: {
-                    type: Sequelize.STRING(50),
-                    allowNull: false
+                customer_account_code: {
+                    type: Sequelize.STRING(7),
+                    allowNull: true
                 },
-                consumer_add_phone: {
-                    type: Sequelize.STRING(20),
-                    allowNull: false
-                },
-                consumer_add_street: {
-                    type: Sequelize.TEXT(),
-                    allowNull: false
+                customer_account_status: {
+                    type: Sequelize.ENUM('active', 'inactive'),
+                    allowNull: false,
+                    defaultValue: 'active'
                 },
                 created_date: {
                     type: Sequelize.DATE,
-                    allowNull: false
+                    allowNull: true
                 },
                 updated_date: {
                     type: Sequelize.DATE,
@@ -54,15 +51,13 @@ module.exports = {
             })
             .then(function () {
                 return [
-                    queryInterface.addIndex('consumer_address', ['consumer_id']),
-                    queryInterface.addIndex('consumer_address', ['prov_id']),
-                    queryInterface.addIndex('consumer_address', ['city_id'])
+                    queryInterface.addIndex('customer_account', ['customer_id'])
                 ]
             });
     },
 
     down: function (queryInterface, Sequelize) {
         // logic for reverting the changes
-        return queryInterface.dropTable('consumer_address');
+        return queryInterface.dropTable('customer_account');
     }
 }

@@ -10,7 +10,7 @@ let obj = (objDB, db, rootpath) => {
     // BEGIN USER
     fn.getUser = async (id) => {
         // prepare sql query
-        let sql = "SELECT * FROM " + tbl.consumer + " WHERE consumer_id = $1 LIMIT 1"
+        let sql = "SELECT * FROM " + tbl.customer + " WHERE customer_id = $1 LIMIT 1"
 
         let rows = await db.query(sql, [id])
         return rows.rows[0]
@@ -18,7 +18,7 @@ let obj = (objDB, db, rootpath) => {
 
     fn.getUserEmail = async (email) => {
         // prepare sql query
-        let sql = "SELECT * FROM " + tbl.consumer + " WHERE consumer_email = $1 LIMIT 1"
+        let sql = "SELECT * FROM " + tbl.customer + " WHERE customer_email = $1 LIMIT 1"
 
         let row = await db.query(sql, [email])
         return row.rows[0]
@@ -26,7 +26,7 @@ let obj = (objDB, db, rootpath) => {
 
     fn.getUserPhone = async (phone) => {
         // prepare sql query
-        let sql = "SELECT * FROM " + tbl.consumer + " WHERE consumer_phone = $1 ORDER BY consumer_id DESC LIMIT 1"
+        let sql = "SELECT * FROM " + tbl.customer + " WHERE customer_phone = $1 ORDER BY customer_id DESC LIMIT 1"
 
         let rows = await db.query(sql, [phone])
         return rows.rows[0]
@@ -34,32 +34,32 @@ let obj = (objDB, db, rootpath) => {
 
     fn.getUserCode = async (code) => {
         // prepare sql query
-        let sql = "SELECT * FROM " + tbl.consumer + " WHERE consumer_code = $1 LIMIT 1"
+        let sql = "SELECT * FROM " + tbl.customer + " WHERE customer_code = $1 LIMIT 1"
 
         let rows = await db.query(sql, [code])
         return rows.rows[0]
     }
 
-    fn.getAllUser = async (where = '', data = [], order_by = " consumer_id ASC ", limit = 0) => {
-        let sql = "SELECT * FROM " + tbl.consumer + " WHERE 1=1 " + where + " ORDER BY " + order_by
+    fn.getAllUser = async (where = '', data = [], order_by = " customer_id ASC ", limit = 0) => {
+        let sql = "SELECT * FROM " + tbl.customer + " WHERE 1=1 " + where + " ORDER BY " + order_by
 
         let result = await objDB.getAll(db, sql, data, limit)
         return result
     }
 
     fn.insertUser = async (data) => {
-        let res = await objDB.insert(db, tbl.consumer, data, "consumer_id")
+        let res = await objDB.insert(db, tbl.customer, data, "customer_id")
         return res
     }
 
     fn.updateUser = async (id, data) => {
-        let where = {'cond': 'consumer_id = $1', 'bind': [id]}
-        return await objDB.update(db, tbl.consumer, where, data)
+        let where = {'cond': 'customer_id = $1', 'bind': [id]}
+        return await objDB.update(db, tbl.customer, where, data)
     }
 
     fn.uploadImage = async (id, data) => {
-        let where = {'cond': 'consumer_id = $1', 'bind': [id]}
-        return await objDB.update(db, tbl.consumer, where, data)
+        let where = {'cond': 'customer_id = $1', 'bind': [id]}
+        return await objDB.update(db, tbl.customer, where, data)
     }
 
     fn.generateRefCode = (string) => {
@@ -81,43 +81,43 @@ let obj = (objDB, db, rootpath) => {
 
     // START DATA
     fn.insertUserData = async (data) => {
-        let res = await objDB.insert(db, tbl.consumer_data, data, "consumer_data_id")
+        let res = await objDB.insert(db, tbl.customer_data, data, "customer_data_id")
         return res
     }
 
     fn.getUserData = async (id) => {
         // prepare sql query
-        let sql = "SELECT * FROM " + tbl.consumer_data + " WHERE consumer_data_id = $1 AND is_deleted = false LIMIT 1"
+        let sql = "SELECT * FROM " + tbl.customer_data + " WHERE customer_data_id = $1 AND is_deleted = false LIMIT 1"
 
         let rows = await db.query(sql, [id])
         return rows.rows[0]
     }
 
     fn.updateUserData = async (id, data) => {
-        let where = {'cond': 'consumer_data_id = $1', 'bind': [id]}
-        return await objDB.update(db, tbl.consumer_data, where, data)
+        let where = {'cond': 'customer_data_id = $1', 'bind': [id]}
+        return await objDB.update(db, tbl.customer_data, where, data)
     }
 
     fn.deleteSoftUserData = async (id, data) => {
-        let where = {'cond': 'consumer_data_id = $1', 'bind': [id]}
-        return await objDB.update(db, tbl.consumer_data, where, data)
+        let where = {'cond': 'customer_data_id = $1', 'bind': [id]}
+        return await objDB.update(db, tbl.customer_data, where, data)
     }
 
     fn.deleteUserData = async (id) => {
-        let where = {"cond": "consumer_data_id = $1", "bind": [id]}
-        return await objDB.delete(db, tbl.consumer_data, where)
+        let where = {"cond": "customer_data_id = $1", "bind": [id]}
+        return await objDB.delete(db, tbl.customer_data, where)
     }
 
-    fn.getAllUserData = async (where = '', data = [], order_by = " consumer_data_id ASC ", limit = 0) => {
-        let sql = "SELECT * FROM " + tbl.consumer_data + " WHERE 1=1 " + where + " ORDER BY " + order_by
+    fn.getAllUserData = async (where = '', data = [], order_by = " customer_data_id ASC ", limit = 0) => {
+        let sql = "SELECT * FROM " + tbl.customer_data + " WHERE 1=1 " + where + " ORDER BY " + order_by
 
         let result = await objDB.getAll(db, sql, data, limit)
         return result
     }
 
-    fn.getPagingUserData = async (where = '', data = [], order_by = " consumer_data_id ASC ", page_no = 0, no_per_page = 0) => {
+    fn.getPagingUserData = async (where = '', data = [], order_by = " customer_data_id ASC ", page_no = 0, no_per_page = 0) => {
         let paging = loadLib('sanitize').pagingNumber(page_no, no_per_page)
-        let sql = "SELECT consumer_data.* FROM " + tbl.consumer_data + " WHERE 1=1 " + where + " ORDER BY " + order_by
+        let sql = "SELECT customer_data.* FROM " + tbl.customer_data + " WHERE 1=1 " + where + " ORDER BY " + order_by
         let result = await objDB.getPaging(db, sql, data, paging.page_no, paging.no_per_page)
         return result
     }
@@ -137,30 +137,30 @@ let obj = (objDB, db, rootpath) => {
             await ltModel.insertRegister('Insert new user, name ' + name + ', email ' + email + ', phone' + phone + ', birthday' + birthday + ', province' + province)
 
             let data = {
-                "consumer_name": name,
-                "consumer_code": await fn.getUniqueCode(email),
-                "consumer_email": email,
-                "consumer_phone": phone,
-                "consumer_identification_id": id_number,
-                "consumer_province": province,
-                "consumer_birthday": birthday,
-                "consumer_password": password,
-                "consumer_status": "active",
+                "customer_name": name,
+                "customer_code": await fn.getUniqueCode(email),
+                "customer_email": email,
+                "customer_phone": phone,
+                "customer_identification_id": id_number,
+                "customer_province": province,
+                "customer_birthday": birthday,
+                "customer_password": password,
+                "customer_status": "active",
                 "last_login": now,
                 "created_date": now
             }
-            let consumer_id = await fn.insertUser(data)
-            let detailUser = await fn.getUser(consumer_id.consumer_id)
+            let customer_id = await fn.insertUser(data)
+            let detailUser = await fn.getUser(customer_id.customer_id)
 
-            // update column consumer_id in auth_token
+            // update column customer_id in auth_token
             data = {
-                "consumer_id": detailUser.consumer_id,
+                "customer_id": detailUser.customer_id,
                 "updated_date": now
             }
             await authModel.updateToken(objToken.atoken_id, data)
 
             //double validation, karena sering terjadi race condition
-            let allUsers = await fn.getAllUser(" AND consumer_phone = $1 ", [phone])
+            let allUsers = await fn.getAllUser(" AND customer_phone = $1 ", [phone])
 
             if(allUsers.length > 1) {
                 throw getMessage('auth016')
@@ -190,11 +190,11 @@ let obj = (objDB, db, rootpath) => {
         await db.query('BEGIN')
         try{
             // create lock_transaction data
-            await ltModel.insertLogin('Insert new user, name ' + detailUser.consumer_name + ', email ' + detailUser.consumer_email + ', phone' + detailUser.consumer_phone)
+            await ltModel.insertLogin('Insert new user, name ' + detailUser.customer_name + ', email ' + detailUser.customer_email + ', phone' + detailUser.customer_phone)
 
-            // update column consumer_id in auth_token
+            // update column customer_id in auth_token
             let tokenData = {
-                "consumer_id": detailUser.consumer_id,
+                "customer_id": detailUser.customer_id,
                 "updated_date": now
             }
             await authModel.updateToken(objToken.atoken_id, tokenData)
@@ -207,7 +207,7 @@ let obj = (objDB, db, rootpath) => {
             }
             await authModel.insertHistoryToken(insData)
             // update last login
-            await fn.updateUser(detailUser.consumer_id, {"last_login": now})
+            await fn.updateUser(detailUser.customer_id, {"last_login": now})
 
             //COMMIT
             await db.query('COMMIT')
