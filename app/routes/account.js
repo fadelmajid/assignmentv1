@@ -10,7 +10,7 @@ module.exports = (app) => {
         {method: 'put', route: '/:account_number', inits: [], middlewares: [accountController.updateAccount], auth: 'login'},
         {method: 'get', route: '/:account_number', inits: [], middlewares: [accountController.getAccount], auth: 'login'},
         {method: 'put', route: '/:account_number/topup', inits: [], middlewares: [accountController.topupAccount], auth: 'login'},
-        {method: 'post', route: '/:account_number/transfer', inits: [], middlewares: [accountController.transfer], auth: 'login'}
+        {method: 'post', route: '/:from/transfer', inits: [], middlewares: [accountController.transfer], auth: 'login'}
         // END ACCOUNT
     ]
     return aRoutes
