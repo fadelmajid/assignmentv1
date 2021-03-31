@@ -27,10 +27,6 @@ module.exports = {
                     type: Sequelize.STRING(100),
                     allowNull: true
                 },
-                customer_account_code: {
-                    type: Sequelize.STRING(7),
-                    allowNull: true
-                },
                 customer_account_status: {
                     type: Sequelize.ENUM('active', 'inactive'),
                     allowNull: false,

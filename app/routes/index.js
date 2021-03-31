@@ -6,6 +6,7 @@ module.exports = (app, router) => {
 
     router.use('/auth', app.route('auth', authController));
     router.use('/customer', app.route('customer', authController));
+    router.use('/account', app.route('account', authController));
     router.use('/constant', app.route('constant', authController));
     router.use('/request', app.route('request', authController));
     router.get('/', mainController.index);

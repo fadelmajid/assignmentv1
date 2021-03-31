@@ -74,7 +74,7 @@
     {"const003": "The number of days entered must be more than 0 "},
 
     {"udt001": "Account Name is required."},
-    {"udt002": "Customer Name is required."},
+    {"udt002": "Account Number is required."},
     {"udt003": "Password is required."},
     {"udt004": "Data not found"},
     {"udt005": "You are not allowed to change this data."},
