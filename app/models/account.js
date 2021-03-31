@@ -3,7 +3,7 @@ let obj = (objDB, db, rootpath) => {
     const tbl = require(rootpath + '/config/tables.json')
     const fn = {}
 
-    // START DATA
+    // START ACCOUNT
     fn.insertAccount = async (data) => {
         let res = await objDB.insert(db, tbl.customer_account, data, "customer_account_id")
         return res
@@ -53,7 +53,7 @@ let obj = (objDB, db, rootpath) => {
         let result = await objDB.getPaging(db, sql, data, paging.page_no, paging.no_per_page)
         return result
     }
-    // END DATA
+    // END ACCOUNT
     return fn
 }
 

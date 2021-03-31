@@ -229,7 +229,7 @@ let obj = (rootpath) => {
             }
 
             await req.model('account').updateAccount(account_to.customer_account_id, data)
-            res.success()
+            res.success({}, 201)
         } catch(e) {next(e)}
     }
 
