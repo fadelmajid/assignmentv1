@@ -31,7 +31,7 @@ let obj = (objDB, db, rootpath) => {
         return row.rows[0]
     }
 
-    fn.getUserToken = async (id) => {
+    fn.getCustomerToken = async (id) => {
         // prepare sql query
         let sql = "SELECT * FROM " + tbl.auth_token + " WHERE atoken_id = $1 LIMIT 1"
         let row = await db.query(sql, [id])
@@ -60,8 +60,8 @@ let obj = (objDB, db, rootpath) => {
         }
         await fn.updateToken(atoken_id, data)
 
-        // return 1 row of user token
-        return await fn.getUserToken(atoken_id)
+        // return 1 row of customer token
+        return await fn.getCustomerToken(atoken_id)
     }
 
     fn.getToken = async (device_id, platform) => {
@@ -89,8 +89,8 @@ let obj = (objDB, db, rootpath) => {
         }
         let atoken_id = await fn.insertToken(data)
 
-        // return 1 row of user token
-        return await fn.getUserToken(atoken_id.atoken_id)
+        // return 1 row of customer token
+        return await fn.getCustomerToken(atoken_id.atoken_id)
     }
 
     fn.setTokenInactive = async (device_id) => {

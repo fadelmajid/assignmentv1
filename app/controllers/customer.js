@@ -6,14 +6,14 @@ let obj = (rootpath) => {
     // BEGIN PROFILE
     fn.getProfile = async (req, res, next) => {
         try {
-            let customer_id = parseInt(req.objUser.customer_id) || 0
+            let customer_id = parseInt(req.objCustomer.customer_id) || 0
             if (customer_id <= 0) {
-                throw getMessage('usr006')
+                throw getMessage('cst006')
             }
 
-            let result = await req.model('customer').getUser(customer_id)
+            let result = await req.model('customer').getCustomer(customer_id)
             if (isEmpty(result)) {
-                throw getMessage('usr007')
+                throw getMessage('cst007')
             }
 
             // don't show the password when get profile
@@ -26,20 +26,20 @@ let obj = (rootpath) => {
     fn.updateProfile = async (req, res, next) => {
         try {
             let validator = require('validator')
-            let customer_id = parseInt(req.objUser.customer_id) || 0
+            let customer_id = parseInt(req.objCustomer.customer_id) || 0
             if (customer_id <= 0) {
-                throw getMessage('usr006')
+                throw getMessage('cst006')
             }
 
-            // Validate username length
+            // Validate customername length
             let name = (req.body.customer_name || '').trim()
             if (!loadLib('validation').validName(name)) {
-                throw getMessage('usr018')
+                throw getMessage('cst018')
             }
 
-            let detailUser = await req.model('customer').getUser(customer_id)
-            if (isEmpty(detailUser)) {
-                throw getMessage('usr007')
+            let detailCustomer = await req.model('customer').getCustomer(customer_id)
+            if (isEmpty(detailCustomer)) {
+                throw getMessage('cst007')
             }
 
             let data = {
@@ -50,25 +50,25 @@ let obj = (rootpath) => {
 
             // validate name
             if (validator.isEmpty(data.customer_name)) {
-                throw getMessage('usr002')
+                throw getMessage('cst002')
             }
             // validate email
             if (validator.isEmpty(data.customer_email)) {
-                throw getMessage('usr003')
+                throw getMessage('cst003')
             }
             // validate email format
             if (!loadLib('validation').isValidEmail(data.customer_email)) {
-                throw getMessage('usr004')
+                throw getMessage('cst004')
             }
-            // validate if email exists and not belong to logged in user
-            let dupEmail = await req.model('customer').getUserEmail(data.customer_email)
+            // validate if email exists and not belong to logged in customer
+            let dupEmail = await req.model('customer').getCustomerEmail(data.customer_email)
             if (dupEmail && dupEmail.customer_id !== customer_id) {
-                throw getMessage('usr005')
+                throw getMessage('cst005')
             }
 
             // insert data & get detail
-            await req.model('customer').updateUser(customer_id, data)
-            let result = await req.model('customer').getUser(customer_id)
+            await req.model('customer').updateCustomer(customer_id, data)
+            let result = await req.model('customer').getCustomer(customer_id)
 
             // don't show password
             delete result.customer_password
@@ -79,22 +79,22 @@ let obj = (rootpath) => {
     // END PROFILE
 
     // START DATA
-    fn.getUserData = async (req, res, next) => {
+    fn.getCustomerData = async (req, res, next) => {
         try {
-            let customer_id = parseInt(req.objUser.customer_id) || 0
+            let customer_id = parseInt(req.objCustomer.customer_id) || 0
             if (customer_id <= 0) {
-                throw getMessage('usr006')
+                throw getMessage('cst006')
             }
             let udata = parseInt(req.params.customer_data_id) || 0
             if (udata <= 0) {
                 throw getMessage('udt001')
             }
             // validate if address exists
-            let result = await req.model('customer').getUserData(udata)
+            let result = await req.model('customer').getCustomerData(udata)
             if (!result) {
                 throw getMessage('udt004')
             }
-            // validate if address belongs to loggedin user using not found error message
+            // validate if address belongs to loggedin customer using not found error message
             if (result.customer_id != customer_id) {
                 throw getMessage('udt004')
             }
@@ -103,39 +103,39 @@ let obj = (rootpath) => {
         } catch (e) {next(e)}
     }
 
-    fn.getAllUserData = async (req, res, next) => {
+    fn.getAllCustomerData = async (req, res, next) => {
         try {
-            let customer_id = parseInt(req.objUser.customer_id) || 0
+            let customer_id = parseInt(req.objCustomer.customer_id) || 0
             if (customer_id <= 0) {
-                throw getMessage('usr006')
+                throw getMessage('cst006')
             }
 
             let keyword = req.query.keyword || ''
             keyword = '%' + keyword + '%'
-            let where = ' AND is_deleted = $1 AND customer_id = $2 AND (customer_data_username LIKE $3 OR customer_data_account LIKE $4) '
+            let where = ' AND is_deleted = $1 AND customer_id = $2 AND (customer_data_customername LIKE $3 OR customer_data_account LIKE $4) '
             let data = [false, customer_id, keyword, keyword]
             let order_by = ' customer_data_id ASC '
-            let result = await req.model('customer').getAllUserData(where, data, order_by)
+            let result = await req.model('customer').getAllCustomerData(where, data, order_by)
 
             res.success(result)
         } catch(e) {next(e)}
     }
 
-    fn.getPagingUserData = async (req, res, next) => {
+    fn.getPagingCustomerData = async (req, res, next) => {
         try {
-            let customer_id = parseInt(req.objUser.customer_id) || 0
+            let customer_id = parseInt(req.objCustomer.customer_id) || 0
             if (customer_id <= 0) {
-                throw getMessage('usr006')
+                throw getMessage('cst006')
             }
 
             let keyword = req.query.keyword || ''
             keyword = '%' + keyword + '%'
-            let where = ' AND is_deleted = $1 AND customer_id = $2 AND (customer_data_username LIKE $3 OR customer_data_account LIKE $4) '
+            let where = ' AND is_deleted = $1 AND customer_id = $2 AND (customer_data_customername LIKE $3 OR customer_data_account LIKE $4) '
             let data = [false, customer_id, keyword, keyword]
             let order_by = ' customer_data_id ASC '
             let page_no = req.query.page || 0
             let no_per_page = req.query.perpage || 0
-            let result = await req.model('customer').getPagingUserData(
+            let result = await req.model('customer').getPagingCustomerData(
                 where,
                 data,
                 order_by,
@@ -147,20 +147,20 @@ let obj = (rootpath) => {
         } catch(e) {next(e)}
     }
 
-    fn.createUserData = async (req, res, next) => {
+    fn.createCustomerData = async (req, res, next) => {
         try {
             let validator = require('validator')
             let moment = require('moment')
             let now = moment().format('YYYY-MM-DD HH:mm:ss')
 
-            let customer_id = parseInt(req.objUser.customer_id) || 0
+            let customer_id = parseInt(req.objCustomer.customer_id) || 0
             if (customer_id <= 0) {
-                throw getMessage('usr006')
+                throw getMessage('cst006')
             }
 
             // get parameter
             let account = (req.body.account || '').trim()
-            let username = (req.body.username || '').trim()
+            let customername = (req.body.customername || '').trim()
             let password = (req.body.password || '')
 
             // Start Validate required
@@ -168,7 +168,7 @@ let obj = (rootpath) => {
                 throw getMessage('udt001')
             }
 
-            if (validator.isEmpty(username)) {
+            if (validator.isEmpty(customername)) {
                 throw getMessage('udt002')
             }
 
@@ -180,111 +180,111 @@ let obj = (rootpath) => {
             let data = {
                 customer_id : customer_id,
                 customer_data_account : account,
-                customer_data_username : username,
+                customer_data_customername : customername,
                 customer_data_password : password,
                 created_date : now
             }
 
-            let customer_data_id = await req.model('customer').insertUserData(data)
-            let result = await req.model('customer').getUserData(customer_data_id.customer_data_id)
+            let customer_data_id = await req.model('customer').insertCustomerData(data)
+            let result = await req.model('customer').getCustomerData(customer_data_id.customer_data_id)
 
             res.success(result)
         } catch(e) {next(e)}
     }
 
-    fn.updateUserData = async (req, res, next) => {
+    fn.updateCustomerData = async (req, res, next) => {
         try {
-            let customer_id = parseInt(req.objUser.customer_id) || 0
+            let customer_id = parseInt(req.objCustomer.customer_id) || 0
             if (customer_id <= 0) {
-                throw getMessage('usr006')
+                throw getMessage('cst006')
             }
             let customer_data_id = parseInt(req.params.customer_data_id) || 0
             if (customer_data_id <= 0) {
                 throw getMessage('udt001')
             }
             // validate if data exists
-            let userdata = await req.model('customer').getUserData(customer_data_id)
-            if (!userdata) {
+            let customerdata = await req.model('customer').getCustomerData(customer_data_id)
+            if (!customerdata) {
                 throw getMessage('udt004')
             }
-            // validate if data belongs to loggedin user
-            if (userdata.customer_id != customer_id) {
+            // validate if data belongs to loggedin customer
+            if (customerdata.customer_id != customer_id) {
                 throw getMessage('udt005')
             }
 
             let data = {
                 customer_data_account: (req.body.account || '').trim(),
-                customer_data_username: (req.body.username || '').trim(),
+                customer_data_customername: (req.body.customername || '').trim(),
                 customer_data_password: (req.body.password || '').trim(),
                 updated_date: moment().format('YYYY-MM-DD HH:mm:ss')
             }
 
-            await req.model('customer').updateUserData(customer_data_id, data)
-            let result = await req.model('customer').getUserData(customer_data_id)
+            await req.model('customer').updateCustomerData(customer_data_id, data)
+            let result = await req.model('customer').getCustomerData(customer_data_id)
             res.success(result)
         } catch(e) {next(e)}
     }
 
-    fn.deleteUserData = async (req, res, next) => {
+    fn.deleteCustomerData = async (req, res, next) => {
         try {
-            let customer_id = parseInt(req.objUser.customer_id) || 0
+            let customer_id = parseInt(req.objCustomer.customer_id) || 0
             if (customer_id <= 0) {
-                throw getMessage('usr006')
+                throw getMessage('cst006')
             }
             let customer_data_id = parseInt(req.params.customer_data_id) || 0
             if (customer_data_id <= 0) {
                 throw getMessage('udt001')
             }
-            // validate if userdata exists
-            let userdata = await req.model('customer').getUserData(customer_data_id)
-            if (!userdata) {
+            // validate if customerdata exists
+            let customerdata = await req.model('customer').getCustomerData(customer_data_id)
+            if (!customerdata) {
                 throw getMessage('udt004')
             }
-            // validate if userdata belongs to loggedin user
-            if (userdata.customer_id != customer_id) {
+            // validate if customerdata belongs to loggedin customer
+            if (customerdata.customer_id != customer_id) {
                 throw getMessage('udt006')
             }
-            // validate userdata records must be more than 1 before delete
-            let all_userdata = await req.model('customer').getAllUserData(' AND is_deleted = $1 AND customer_id = $2 ', [false, customer_id])
-            if (all_userdata.length < 1) {
+            // validate customerdata records must be more than 1 before delete
+            let all_customerdata = await req.model('customer').getAllCustomerData(' AND is_deleted = $1 AND customer_id = $2 ', [false, customer_id])
+            if (all_customerdata.length < 1) {
                 throw getMessage('udt009')
             }
 
-            await req.model('customer').deleteUserData(customer_data_id)
+            await req.model('customer').deleteCustomerData(customer_data_id)
             res.success(getMessage('udt008'))
         } catch (e) {next(e)}
     }
 
-    fn.deleteSoftUserData = async (req, res, next) => {
+    fn.deleteSoftCustomerData = async (req, res, next) => {
         try {
-            let customer_id = parseInt(req.objUser.customer_id) || 0
+            let customer_id = parseInt(req.objCustomer.customer_id) || 0
             if (customer_id <= 0) {
-                throw getMessage('usr006')
+                throw getMessage('cst006')
             }
             let customer_data_id = parseInt(req.params.customer_data_id) || 0
             if (customer_data_id <= 0) {
                 throw getMessage('udt001')
             }
-            // validate if userdata exists
-            let userdata = await req.model('customer').getUserData(customer_data_id)
-            if (!userdata) {
+            // validate if customerdata exists
+            let customerdata = await req.model('customer').getCustomerData(customer_data_id)
+            if (!customerdata) {
                 throw getMessage('udt004')
             }
-            // validate if userdata belongs to loggedin user
-            if (userdata.customer_id != customer_id) {
+            // validate if customerdata belongs to loggedin customer
+            if (customerdata.customer_id != customer_id) {
                 throw getMessage('udt006')
             }
-            // validate if userdata already deleted or not
-            if (userdata.is_deleted == true) {
+            // validate if customerdata already deleted or not
+            if (customerdata.is_deleted == true) {
                 throw getMessage('udt010')
             }
-            // validate userdata records must be more than 1 before delete
-            let all_userdata = await req.model('customer').getAllUserData(' AND is_deleted = $1 AND customer_id = $2 ', [false, customer_id])
-            if (all_userdata.length < 1) {
+            // validate customerdata records must be more than 1 before delete
+            let all_customerdata = await req.model('customer').getAllCustomerData(' AND is_deleted = $1 AND customer_id = $2 ', [false, customer_id])
+            if (all_customerdata.length < 1) {
                 throw getMessage('udt009')
             }
 
-            await req.model('customer').deleteSoftUserData(customer_data_id, {is_deleted : true})
+            await req.model('customer').deleteSoftCustomerData(customer_data_id, {is_deleted : true})
             res.success(getMessage('udt008'))
         } catch (e) {next(e)}
     }

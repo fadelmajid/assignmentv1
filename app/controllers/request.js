@@ -6,9 +6,9 @@ let obj = (rootpath) => {
     // BEGIN PROFILE
     fn.createRequest = async (req, res, next) => {
         try {
-            let customer_id = parseInt(req.objUser.customer_id) || 0
+            let customer_id = parseInt(req.objCustomer.customer_id) || 0
             if (customer_id <= 0) {
-                throw getMessage('usr006')
+                throw getMessage('cst006')
             }
 
             // Validate amount

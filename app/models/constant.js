@@ -3,7 +3,7 @@ let obj = (objDB, db, rootpath) => {
     const tbl = require(rootpath + '/config/tables.json')
     const fn = {}
 
-    // BEGIN USER
+    // BEGIN CUSTOMER
     fn.getConstant = async (id) => {
         // prepare sql query
         let sql = "SELECT * FROM " + tbl.constant + " WHERE const_id = $1 LIMIT 1"
@@ -24,7 +24,7 @@ let obj = (objDB, db, rootpath) => {
         let res = await objDB.insert(db, tbl.constant, data, "const_id")
         return res
     }
-    // END USER
+    // END CUSTOMER
     return fn
 }
 

@@ -22,7 +22,7 @@ let obj = (rootpath) => {
 
     fn.createConstant = async (req, res, next) => {
         try {
-            // Validate username length
+            // Validate customername length
             let day_max = req.body.day_max || 0
             if (day_max <= 0) {
                 throw getMessage('const003')

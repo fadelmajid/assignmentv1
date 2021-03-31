@@ -3,7 +3,7 @@ let obj = (objDB, db, rootpath) => {
     const tbl = require(rootpath + '/config/tables.json')
     const fn = {}
 
-    // BEGIN USER
+    // BEGIN CUSTOMER
     fn.getRequest = async (id) => {
         // prepare sql query
         let sql = "SELECT * FROM " + tbl.request_loan + " WHERE reqloan_id = $1 LIMIT 1"
@@ -40,7 +40,7 @@ let obj = (objDB, db, rootpath) => {
         let res = await objDB.insert(db, tbl.request_loan, data, "reqloan_id")
         return res
     }
-    // END USER
+    // END CUSTOMER
     return fn
 }
 

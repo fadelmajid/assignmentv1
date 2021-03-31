@@ -7,8 +7,8 @@ let obj = (objDB, db, rootpath) => {
     let moment = require('moment')
     const crypto = require('crypto')
 
-    // BEGIN USER
-    fn.getUser = async (id) => {
+    // BEGIN CUSTOMER
+    fn.getCustomer = async (id) => {
         // prepare sql query
         let sql = "SELECT * FROM " + tbl.customer + " WHERE customer_id = $1 LIMIT 1"
 
@@ -16,7 +16,7 @@ let obj = (objDB, db, rootpath) => {
         return rows.rows[0]
     }
 
-    fn.getUserEmail = async (email) => {
+    fn.getCustomerEmail = async (email) => {
         // prepare sql query
         let sql = "SELECT * FROM " + tbl.customer + " WHERE customer_email = $1 LIMIT 1"
 
@@ -24,7 +24,7 @@ let obj = (objDB, db, rootpath) => {
         return row.rows[0]
     }
 
-    fn.getUserPhone = async (phone) => {
+    fn.getCustomerPhone = async (phone) => {
         // prepare sql query
         let sql = "SELECT * FROM " + tbl.customer + " WHERE customer_phone = $1 ORDER BY customer_id DESC LIMIT 1"
 
@@ -32,7 +32,7 @@ let obj = (objDB, db, rootpath) => {
         return rows.rows[0]
     }
 
-    fn.getUserCode = async (code) => {
+    fn.getCustomerCode = async (code) => {
         // prepare sql query
         let sql = "SELECT * FROM " + tbl.customer + " WHERE customer_code = $1 LIMIT 1"
 
@@ -40,19 +40,19 @@ let obj = (objDB, db, rootpath) => {
         return rows.rows[0]
     }
 
-    fn.getAllUser = async (where = '', data = [], order_by = " customer_id ASC ", limit = 0) => {
+    fn.getAllCustomer = async (where = '', data = [], order_by = " customer_id ASC ", limit = 0) => {
         let sql = "SELECT * FROM " + tbl.customer + " WHERE 1=1 " + where + " ORDER BY " + order_by
 
         let result = await objDB.getAll(db, sql, data, limit)
         return result
     }
 
-    fn.insertUser = async (data) => {
+    fn.insertCustomer = async (data) => {
         let res = await objDB.insert(db, tbl.customer, data, "customer_id")
         return res
     }
 
-    fn.updateUser = async (id, data) => {
+    fn.updateCustomer = async (id, data) => {
         let where = {'cond': 'customer_id = $1', 'bind': [id]}
         return await objDB.update(db, tbl.customer, where, data)
     }
@@ -65,7 +65,7 @@ let obj = (objDB, db, rootpath) => {
     fn.generateRefCode = (string) => {
         let moment = require('moment')
         const crypto = require('crypto')
-        // notes : function untuk generate referral code per user
+        // notes : function untuk generate referral code per customer
         const mili = moment().millisecond()
         const rstr = '_' + Math.random().toString(36).substr(2, 9)
         let unique = crypto.createHash('sha256').update(mili + string + rstr).digest("hex")
@@ -77,15 +77,15 @@ let obj = (objDB, db, rootpath) => {
         let referral_code = fn.generateRefCode(string)
         return referral_code
     }
-    // END USER
+    // END CUSTOMER
 
     // START DATA
-    fn.insertUserData = async (data) => {
+    fn.insertCustomerData = async (data) => {
         let res = await objDB.insert(db, tbl.customer_data, data, "customer_data_id")
         return res
     }
 
-    fn.getUserData = async (id) => {
+    fn.getCustomerData = async (id) => {
         // prepare sql query
         let sql = "SELECT * FROM " + tbl.customer_data + " WHERE customer_data_id = $1 AND is_deleted = false LIMIT 1"
 
@@ -93,29 +93,29 @@ let obj = (objDB, db, rootpath) => {
         return rows.rows[0]
     }
 
-    fn.updateUserData = async (id, data) => {
+    fn.updateCustomerData = async (id, data) => {
         let where = {'cond': 'customer_data_id = $1', 'bind': [id]}
         return await objDB.update(db, tbl.customer_data, where, data)
     }
 
-    fn.deleteSoftUserData = async (id, data) => {
+    fn.deleteSoftCustomerData = async (id, data) => {
         let where = {'cond': 'customer_data_id = $1', 'bind': [id]}
         return await objDB.update(db, tbl.customer_data, where, data)
     }
 
-    fn.deleteUserData = async (id) => {
+    fn.deleteCustomerData = async (id) => {
         let where = {"cond": "customer_data_id = $1", "bind": [id]}
         return await objDB.delete(db, tbl.customer_data, where)
     }
 
-    fn.getAllUserData = async (where = '', data = [], order_by = " customer_data_id ASC ", limit = 0) => {
+    fn.getAllCustomerData = async (where = '', data = [], order_by = " customer_data_id ASC ", limit = 0) => {
         let sql = "SELECT * FROM " + tbl.customer_data + " WHERE 1=1 " + where + " ORDER BY " + order_by
 
         let result = await objDB.getAll(db, sql, data, limit)
         return result
     }
 
-    fn.getPagingUserData = async (where = '', data = [], order_by = " customer_data_id ASC ", page_no = 0, no_per_page = 0) => {
+    fn.getPagingCustomerData = async (where = '', data = [], order_by = " customer_data_id ASC ", page_no = 0, no_per_page = 0) => {
         let paging = loadLib('sanitize').pagingNumber(page_no, no_per_page)
         let sql = "SELECT customer_data.* FROM " + tbl.customer_data + " WHERE 1=1 " + where + " ORDER BY " + order_by
         let result = await objDB.getPaging(db, sql, data, paging.page_no, paging.no_per_page)
@@ -134,7 +134,7 @@ let obj = (objDB, db, rootpath) => {
         await db.query('BEGIN')
         try{
             // create lock_transaction data
-            await ltModel.insertRegister('Insert new user, name ' + name + ', email ' + email + ', phone' + phone + ', birthday' + birthday + ', province' + province)
+            await ltModel.insertRegister('Insert new customer, name ' + name + ', email ' + email + ', phone' + phone + ', birthday' + birthday + ', province' + province)
 
             let data = {
                 "customer_name": name,
@@ -149,27 +149,27 @@ let obj = (objDB, db, rootpath) => {
                 "last_login": now,
                 "created_date": now
             }
-            let customer_id = await fn.insertUser(data)
-            let detailUser = await fn.getUser(customer_id.customer_id)
+            let customer_id = await fn.insertCustomer(data)
+            let detailCustomer = await fn.getCustomer(customer_id.customer_id)
 
             // update column customer_id in auth_token
             data = {
-                "customer_id": detailUser.customer_id,
+                "customer_id": detailCustomer.customer_id,
                 "updated_date": now
             }
             await authModel.updateToken(objToken.atoken_id, data)
 
             //double validation, karena sering terjadi race condition
-            let allUsers = await fn.getAllUser(" AND customer_phone = $1 ", [phone])
+            let allCustomers = await fn.getAllCustomer(" AND customer_phone = $1 ", [phone])
 
-            if(allUsers.length > 1) {
+            if(allCustomers.length > 1) {
                 throw getMessage('auth016')
             }
 
             //COMMIT
             await db.query('COMMIT')
 
-            return detailUser
+            return detailCustomer
         }catch(e) {
             //ROLLBACK
             await db.query('ROLLBACK')
@@ -184,17 +184,17 @@ let obj = (objDB, db, rootpath) => {
         const now = moment().format('YYYY-MM-DD HH:mm:ss')
         const authModel = require('./auth.js')(objDB, db, rootpath)
         const ltModel = require('./lock_transaction.js')(objDB, db, rootpath)
-        const {detailUser, objToken} = data
+        const {detailCustomer, objToken} = data
 
         //BEGIN TRANSACTION
         await db.query('BEGIN')
         try{
             // create lock_transaction data
-            await ltModel.insertLogin('Insert new user, name ' + detailUser.customer_name + ', email ' + detailUser.customer_email + ', phone' + detailUser.customer_phone)
+            await ltModel.insertLogin('Insert new customer, name ' + detailCustomer.customer_name + ', email ' + detailCustomer.customer_email + ', phone' + detailCustomer.customer_phone)
 
             // update column customer_id in auth_token
             let tokenData = {
-                "customer_id": detailUser.customer_id,
+                "customer_id": detailCustomer.customer_id,
                 "updated_date": now
             }
             await authModel.updateToken(objToken.atoken_id, tokenData)
@@ -207,7 +207,7 @@ let obj = (objDB, db, rootpath) => {
             }
             await authModel.insertHistoryToken(insData)
             // update last login
-            await fn.updateUser(detailUser.customer_id, {"last_login": now})
+            await fn.updateCustomer(detailCustomer.customer_id, {"last_login": now})
 
             //COMMIT
             await db.query('COMMIT')
