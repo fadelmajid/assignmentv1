@@ -1,0 +1,10 @@
+version: "2.2"
+services:
+  my-postgres:
+    image: postgres
+    ports:
+      - "9000:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: xendit-go-live-service
