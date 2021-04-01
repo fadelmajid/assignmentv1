@@ -5,12 +5,18 @@ services:
     ports:
       - "9000:5432"
     environment:
-      POSTGRES_USER: user_postgres
-      POSTGRES_PASSWORD: pwd_postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: a455328fm
       POSTGRES_DB: assignment
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+      # copy the sql script to create tables
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      # copy the sql script to fill tables
+      - ./sql/fill_tables.sql:/docker-entrypoint-initdb.d/fill_tables.sql   
   my-app:
     image: fadelmajid/node-server
     depends_on:
       - my-postgres
     ports: 
-      - "8585:8585"
+      - "3000:3000"

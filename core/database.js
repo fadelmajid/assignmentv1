@@ -10,11 +10,11 @@ let dbx = (rootpath) => {
         }
         pool = await postgres({
             connectionLimit : 500,
-            host: process.env.HOST_DB,
-            port: process.env.PORT_DB,
-            user: process.env.USERNAME_DB,
-            password: process.env.PASSWORD_DB,
-            database: process.env.DATABASE,
+            host: configDB.host,
+            port: configDB.port,
+            user: configDB.username,
+            password: configDB.password,
+            database: configDB.database,
             timezone: 'SYSTEM',
             timeout: 5,
             debug: ENV === 'development' ? ['ComQueryPacket'] : false
