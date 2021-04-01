@@ -5,6 +5,12 @@ services:
     ports:
       - "9000:5432"
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: xendit-go-live-service
+      POSTGRES_USER: user_postgres
+      POSTGRES_PASSWORD: pwd_postgres
+      POSTGRES_DB: assignment
+  my-app:
+    image: fadelmajid/node-server
+    depends_on:
+      - my-postgres
+    ports: 
+      - "8585:8585"
