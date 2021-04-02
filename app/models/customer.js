@@ -142,7 +142,6 @@ let obj = (objDB, db, rootpath) => {
                 "customer_email": email,
                 "customer_phone": phone,
                 "customer_identification_id": id_number,
-                "customer_province": province,
                 "customer_birthday": birthday,
                 "customer_password": password,
                 "customer_status": "active",

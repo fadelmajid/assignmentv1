@@ -318,12 +318,6 @@ let obj = (rootpath) => {
                 throw getMessage('cst026')
             }
 
-            // validate province
-            let code_prv = id_number.substr(0,2)
-            if(!cst.code_province[code_prv]){
-                throw getMessage('cst027')
-            }
-
             // validate age
             let age = moment().diff(birthday, "years")
             if(age < 17 || age >= 80){
@@ -341,7 +335,6 @@ let obj = (rootpath) => {
                     "email": email,
                     "phone": phone,
                     "id_number": id_number,
-                    "province": cst.code_province[code_prv],
                     "birthday": moment(birthday, "YYYY-MM-DD"),
                     "password": password,                    
                     "objToken": req.objToken,

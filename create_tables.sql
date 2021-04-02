@@ -1,15 +1,14 @@
 -- Creation of product table
 CREATE TABLE IF NOT EXISTS customer (
   customer_id SERIAL,
-  customer_name varchar(200),
+  customer_name VARCHAR(200),
   customer_password TEXT,
-  customer_code varchar(7),
-  customer_email varchar(100),
-  customer_phone varchar(50),
-  customer_identification_id varchar(100),
+  customer_code VARCHAR(7),
+  customer_email VARCHAR(100),
+  customer_phone VARCHAR(50),
+  customer_identification_id VARCHAR(100),
   customer_birthday TIMESTAMP,
-  customer_province varchar(50),
-  customer_status varchar(50),
+  customer_status VARCHAR(50),
   last_login TIMESTAMP,
   last_activity TIMESTAMP,
   created_date TIMESTAMP,
@@ -29,11 +28,11 @@ CREATE TABLE IF NOT EXISTS lock_transaction (
 CREATE TABLE IF NOT EXISTS auth_token (
   atoken_id SERIAL,
   customer_id INT NOT NULL,
-  atoken_device varchar(200),
-  atoken_platform varchar(200),
-  atoken_access varchar(200),
-  atoken_status varchar(10),
-  atoken_refresh varchar(200),
+  atoken_device VARCHAR(200),
+  atoken_platform VARCHAR(200),
+  atoken_access VARCHAR(200),
+  atoken_status VARCHAR(10),
+  atoken_refresh VARCHAR(200),
   expired_date TIMESTAMP,
   created_date TIMESTAMP,
   updated_date TIMESTAMP,
@@ -44,9 +43,9 @@ CREATE TABLE IF NOT EXISTS auth_token (
 -- Creation of product table
 CREATE TABLE IF NOT EXISTS app_version (
   ver_id SERIAL,
-  ver_code  varchar(50) NOT NULL,
-  ver_platform varchar(50),
-  ver_status varchar(10),
+  ver_code  VARCHAR(50) NOT NULL,
+  ver_platform VARCHAR(50),
+  ver_status VARCHAR(10),
   created_by INT NOT NULL,
   updated_by INT NOT NULL,
   created_date TIMESTAMP,
@@ -57,8 +56,8 @@ CREATE TABLE IF NOT EXISTS app_version (
 -- Creation of product table
 CREATE TABLE IF NOT EXISTS history_device (
   hd_id SERIAL,
-  atoken_device  varchar(200),
-  atoken_platform varchar(200),
+  atoken_device  VARCHAR(200),
+  atoken_platform VARCHAR(200),
   created_date TIMESTAMP,
   PRIMARY KEY (hd_id)
 );
@@ -66,10 +65,10 @@ CREATE TABLE IF NOT EXISTS history_device (
 CREATE TABLE IF NOT EXISTS customer_account (
   customer_account_id SERIAL,
   customer_id INT NOT NULL,
-  customer_account_number varchar(100),
-  customer_account_name varchar(100),
+  customer_account_number VARCHAR(100) UNIQUE,
+  customer_account_name VARCHAR(100),
   customer_account_balance INT,
-  is_deleted BOOLEAN,
+  is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
   created_date TIMESTAMP,
   updated_date TIMESTAMP,
   PRIMARY KEY (customer_account_id)
@@ -79,9 +78,19 @@ CREATE TABLE IF NOT EXISTS customer_account_directory (
   customer_account_directory_id SERIAL,
   customer_id INT NOT NULL,
   customer_account_id INT NOT NULL,
-  customer_account_directory_name varchar(100),
-  customer_account_status varchar(10),
+  customer_account_directory_name VARCHAR(100),
+  customer_account_status VARCHAR(10),
   created_date TIMESTAMP,
   updated_date TIMESTAMP,
   PRIMARY KEY (customer_account_directory_id)
+);
+
+CREATE TABLE IF NOT EXISTS customer_transaction (
+  customer_transaction_id SERIAL,
+  customer_id_from INT NOT NULL,
+  customer_id_to INT NOT NULL,
+  customer_transaction_type VARCHAR(50),
+  customer_transaction_amount INT,
+  created_date TIMESTAMP,
+  PRIMARY KEY (customer_transaction_id)
 );

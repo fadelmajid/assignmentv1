@@ -76,6 +76,7 @@ let obj = (rootpath) => {
 
     fn.createAccount = async (req, res, next) => {
         try {
+            console.log('=======================================')
             let validator = require('validator')
             let moment = require('moment')
             let now = moment().format('YYYY-MM-DD HH:mm:ss')
@@ -105,11 +106,20 @@ let obj = (rootpath) => {
                 customer_account_number : number,
                 created_date : now
             }
+            
+            let customer_account;
+            try {
+                customer_account = await req.model('account').insertAccount(data)
+            } catch (error) {
+                if(error.constraint == 'customer_account_customer_account_number_key'){
+                    throw getMessage('account number has been used')
+                }
 
-            let customer_account_id = await req.model('account').insertAccount(data)
-            let result = await req.model('account').getAccount(customer_account_id.customer_account_id)
+                throw getMessage('server error')
+            }
 
-            res.success(result)
+            let result = await req.model('account').getAccount(customer_account.customer_account_id)
+            res.success(result)   
         } catch(e) {next(e)}
     }
 
@@ -223,12 +233,18 @@ let obj = (rootpath) => {
             }
             
             let data = {
-                customer_account_balance: account_to.customer_account_balance + amount,
-                updated_date: moment().format('YYYY-MM-DD HH:mm:ss')
+                to : account_to,
+                from: account_from,
+                amount: amount
             }
 
-            await req.model('account').updateAccount(account_to.customer_account_id, data)
-            res.success({}, 201)
+            let is_transfered = await req.model('account').transfer(data)
+
+            if(is_transfered){
+                res.success({}, 201)
+            }else{
+                throw getMessage('Transfer fail, please try again')
+            }
         } catch(e) {next(e)}
     }
 

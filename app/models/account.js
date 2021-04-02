@@ -53,6 +53,57 @@ let obj = (objDB, db, rootpath) => {
         let result = await objDB.getPaging(db, sql, data, paging.page_no, paging.no_per_page)
         return result
     }
+
+    //BEGIN TRANSFER
+    fn.transfer = async (data) => {
+        let moment = require('moment')
+        const now = moment().format('YYYY-MM-DD HH:mm:ss')
+        const ltModel = require('./lock_transaction.js')(objDB, db, rootpath)
+        const trxModel = require('./transaction.js')(objDB, db, rootpath)
+        const {to, from, amount} = data
+
+        //BEGIN TRANSACTION
+        await db.query('BEGIN')
+        try{
+            // insert lock_transaction data
+            await ltModel.insert(
+                'Insert new transaction, tranfer from customer_account_id: ' 
+                + to.customer_account_id + ', to customer_account_id: ' 
+                + from.customer_account_id + ', amount :' + amount
+            )
+
+            // insert customer transaction data
+            await trxModel.insertTransaction({
+                customer_id_to: to.customer_account_id,
+                customer_id_from: from.customer_account_from,
+                customer_transation_amount: amount,
+                customer_transaction_type: 'transfer',
+                created_date: now
+            })
+
+            // update customer account balance // deduct balance sender
+            await fn.updateAccount(from.customer_id, {
+                customer_account_balance: from.customer_account_balance - amount,
+                updated_date: now
+            })
+
+            // update customer account balance // add balance receiver
+            await fn.updateAccount(to.customer_id, {
+                customer_account_balance: to.customer_account_balance + amount,
+                updated_date: now
+            })
+
+            //COMMIT
+            await db.query('COMMIT')
+
+            return true
+        }catch(e) {
+            //ROLLBACK
+            await db.query('ROLLBACK')
+            return false
+        }
+    }
+
     // END ACCOUNT
     return fn
 }

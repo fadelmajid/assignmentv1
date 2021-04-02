@@ -6,5 +6,6 @@
     "customer_data": "customer_data",
     "lock_transaction": "lock_transaction",
     "history_device": "history_device",
-    "customer_account": "customer_account"
+    "customer_account": "customer_account",
+    "customer_transaction": "customer_transaction"
 }

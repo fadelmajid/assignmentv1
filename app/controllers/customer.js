@@ -31,8 +31,13 @@ let obj = (rootpath) => {
                 throw getMessage('cst006')
             }
 
+
             // Validate customername length
             let name = (req.body.customer_name || '').trim()
+            let email = (req.body.email || '').trim().toLowerCase()
+            let phone = (req.body.phone || '').trim()            
+            let id_number = (req.body.id_number || '').trim()    
+
             if (!loadLib('validation').validName(name)) {
                 throw getMessage('cst018')
             }
@@ -43,8 +48,10 @@ let obj = (rootpath) => {
             }
 
             let data = {
-                customer_name: name,
-                customer_email: (req.body.customer_email || '').toLowerCase() || '',
+                customer_name: name || detailCustomer.customer_name,
+                customer_email: email || detailCustomer.customer_email,
+                customer_phone: phone || detailCustomer.customer_phone,
+                customer_identification_id: id_number || detailCustomer.customer_identification_id,
                 updated_date: moment().format('YYYY-MM-DD HH:mm:ss')
             }
 
