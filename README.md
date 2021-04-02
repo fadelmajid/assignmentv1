@@ -4,9 +4,10 @@ Assignment API Framework
 Setup
 ------------
 1. Make sure you've install docker
-2. In this directory, type command: `docker-compose up` or `docker-compose up -d` to initiate Database
-3. In this directory, you can open new terminal and type `npm start`
-4. Hit http://localhost:3000
+2. In this directory, run command: `docker-compose up` or `docker-compose up -d` to initiate Database
+3. Run command `npm install` to install depedencies
+4. Run command `npm start`
+5. Hit the requst on http://localhost:3000
 
 POSTMAN Collection and Environment
 ------------
