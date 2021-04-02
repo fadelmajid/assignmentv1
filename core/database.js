@@ -36,9 +36,7 @@ let dbx = (rootpath) => {
             sql += " LIMIT $"+(bind+1)
         }
 
-        console.log(sql)
 
-        console.log(data)
         let query = await conn.query(sql, data)
         return query.rows
     }

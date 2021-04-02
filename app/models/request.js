@@ -30,9 +30,7 @@ let obj = (objDB, db, rootpath) => {
 
     fn.getAllRequest = async (where = '', data = [], order_by = 'created_date ASC', limit = 0) => {
         let sql = "SELECT * FROM " + tbl.request_loan + " WHERE 1=1 " + where + " ORDER BY " + order_by
-        console.log(sql)
         let result = await objDB.getAll(db, sql, data, limit)
-        console.log(result)
         return result
     }
 

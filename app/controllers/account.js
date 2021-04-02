@@ -138,7 +138,6 @@ let obj = (rootpath) => {
                 customer_account_status: (req.body.customer_account_status || 'active').trim(),
                 updated_date: moment().format('YYYY-MM-DD HH:mm:ss')
             }
-            console.log(account)
 
             await req.model('account').updateAccount(account.customer_account_id, data)
             let result = await req.model('account').getAccount(account.customer_account_id)

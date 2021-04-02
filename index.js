@@ -11,7 +11,7 @@ const fw = express();
 const core = require('./core')(fw, __dirname);
 core.init(__dirname, 'app');
 
-console.log('this is the port', port);
+console.log('list to port : ', port);
 
 fw.listen(port);
 
