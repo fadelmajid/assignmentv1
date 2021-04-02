@@ -40,7 +40,7 @@ let obj = (rootpath) => {
 
             let where = ' AND customer_id_from = $1 OR customer_id_to = $2 '
             let data = [customer_id, customer_id]
-            let order_by = ' customer_transaction_id ASC '
+            let order_by = ' customer_transaction_id DESC '
             let result = await req.model('transaction').getAllTransaction(where, data, order_by)
 
             res.success(result)
@@ -56,7 +56,7 @@ let obj = (rootpath) => {
 
             let where = ' AND customer_id_from = $1 OR customer_id_to = $2 '
             let data = [customer_id, customer_id]
-            let order_by = ' customer_transaction_id ASC '
+            let order_by = ' customer_transaction_id DESC '
             let page_no = req.query.page || 0
             let no_per_page = req.query.perpage || 0
             let result = await req.model('transaction').getPagingTransaction(
