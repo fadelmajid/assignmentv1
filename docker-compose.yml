@@ -5,6 +5,7 @@ services:
     ports:
       - "9000:5432"
     environment:
+      # this setup will also represent in ./config/config.json
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: a455328fm
       POSTGRES_DB: assignment
