@@ -82,5 +82,14 @@
     {"udt007": "Data was successfully updated."},
     {"udt008": "Data was successfully deleted."},
     {"udt009": "You must have at least 1 data."},
-    {"udt010": "Data already deleted."}
+    {"udt010": "Data already deleted."},
+    {"udt011": "Account number has been used, please use another account number."},
+    {"udt012": "The amount should more than 10000."},
+    {"udt013": "Transaction fail, please try again."},
+    {"udt014": "You are not allowed to transfer to the same account number."},
+    {"udt015": "Your balance is not enough."},
+    {"udt016": "Targeted account is required"},
+    {"udt017": "Targeted account doesn't exists"}
+
+    
 ]

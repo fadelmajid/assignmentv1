@@ -76,7 +76,6 @@ let obj = (rootpath) => {
 
     fn.createAccount = async (req, res, next) => {
         try {
-            console.log('=======================================')
             let validator = require('validator')
             let moment = require('moment')
             let now = moment().format('YYYY-MM-DD HH:mm:ss')
@@ -112,10 +111,10 @@ let obj = (rootpath) => {
                 customer_account = await req.model('account').insertAccount(data)
             } catch (error) {
                 if(error.constraint == 'customer_account_customer_account_number_key'){
-                    throw getMessage('account number has been used')
+                    throw getMessage('udt011')
                 }
 
-                throw getMessage('server error')
+                throw getMessage('err001')
             }
 
             let result = await req.model('account').getAccount(customer_account.customer_account_id)
@@ -167,7 +166,7 @@ let obj = (rootpath) => {
             let amount = parseInt(req.body.amount) || 0
             // validate if the amount is more than 10000
             if(amount <= 10000){
-                throw getMessage('The amount should more than 10000') 
+                throw getMessage('udt012') 
             }
             // validate if account exists
             let account = await req.model('account').getAccountByNumber(account_number)
@@ -194,7 +193,7 @@ let obj = (rootpath) => {
                 let result = await req.model('account').getAccount(account.customer_account_id)
                 res.success(result)
             }else{
-                throw getMessage('Transfer fail, please try again')
+                throw getMessage('udt013')
             }
         } catch(e) {next(e)}
     }
@@ -212,7 +211,7 @@ let obj = (rootpath) => {
 
             // validate account number from and to
             if(account_number_from == account_number_to){
-                throw getMessage('cannot transfer to the same account')
+                throw getMessage('udt014')
             }
             
             // from
@@ -231,20 +230,20 @@ let obj = (rootpath) => {
             // validate the amount
             let amount = parseInt(req.body.amount) || 0
             if (account.customer_account_balance <= amount) {
-                throw getMessage('Customer balance is not enough') 
+                throw getMessage('udt015') 
             }
             if (amount <= 10000) {
-                throw getMessage('The amount should more than 10000') 
+                throw getMessage('udt012') 
             }
             
             // to
             if (validator.isEmpty(account_number_to)) {
-                throw getMessage('targeted account is required')
+                throw getMessage('udt016')
             }
             // validate if account exists
             let account_to = await req.model('account').getAccountByNumber(account_number_to)
             if (!account_to) {
-                throw getMessage(`targeted account doesn't exist`)
+                throw getMessage('udt017')
             }
             
             let data = {
@@ -259,7 +258,7 @@ let obj = (rootpath) => {
             if(is_transfered){
                 res.success({}, 201)
             }else{
-                throw getMessage('Transfer fail, please try again')
+                throw getMessage('udt013')
             }
         } catch(e) {next(e)}
     }
