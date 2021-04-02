@@ -7,6 +7,7 @@ module.exports = (app) => {
         // START ACCOUNT
         {method: 'post', route: '/', inits: [], middlewares: [accountController.createAccount], auth: 'login'},
         {method: 'get', route: '/all', inits: [], middlewares: [accountController.getAllAccount], auth: 'login'},
+        {method: 'get', route: '/', inits: [], middlewares: [accountController.getPagingAccount], auth: 'login'},
         {method: 'put', route: '/:account_number', inits: [], middlewares: [accountController.updateAccount], auth: 'login'},
         {method: 'get', route: '/:account_number', inits: [], middlewares: [accountController.getAccount], auth: 'login'},
         {method: 'put', route: '/:account_number/topup', inits: [], middlewares: [accountController.topupAccount], auth: 'login'},

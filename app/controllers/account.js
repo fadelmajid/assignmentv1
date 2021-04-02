@@ -185,8 +185,6 @@ let obj = (rootpath) => {
                 type: 'topup'
             }
 
-            console.log(amount)
-
             let is_transacted = await req.model('account').accountTransaction(data)
 
             if(is_transacted){

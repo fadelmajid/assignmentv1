@@ -74,8 +74,8 @@ let obj = (objDB, db, rootpath) => {
 
             // insert customer transaction data
             await trxModel.insertTransaction({
-                customer_id_to: to.customer_account_id,
-                customer_id_from: from.customer_account_id,
+                customer_id_to: to.customer_id,
+                customer_id_from: from.customer_id,
                 customer_transaction_amount: amount,
                 customer_transaction_type: type,
                 created_date: now

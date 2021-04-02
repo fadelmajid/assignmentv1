@@ -89,7 +89,8 @@
     {"udt014": "You are not allowed to transfer to the same account number."},
     {"udt015": "Your balance is not enough."},
     {"udt016": "Targeted account is required"},
-    {"udt017": "Targeted account doesn't exists"}
+    {"udt017": "Targeted account doesn't exists"},
+    {"udt018": "You are not allowed to see this data."}
 
     
 ]
