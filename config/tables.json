@@ -2,10 +2,9 @@
     "customer": "customer",
     "auth_token": "auth_token",    
     "app_version": "app_version",
-    "customer_address": "customer_address",
-    "customer_data": "customer_data",
     "lock_transaction": "lock_transaction",
     "history_device": "history_device",
     "customer_account": "customer_account",
+    "customer_account_directory": "customer_account_directory",
     "customer_transaction": "customer_transaction"
 }

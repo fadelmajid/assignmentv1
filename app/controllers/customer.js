@@ -84,6 +84,103 @@ let obj = (rootpath) => {
         } catch(e) {next(e)}
     }
     // END PROFILE
+
+    // BEGIN SAVED ACCOUNT
+    fn.getSavedAccount = async (req, res, next) => {
+        try {
+            let customer_id = parseInt(req.objCustomer.customer_id) || 0
+            if (customer_id <= 0) {
+                throw getMessage('cst006')
+            }
+            let account_number = req.params.account_number || ''
+            if (validator.isEmpty(account_number)) {
+                throw getMessage('udt001')
+            }
+            // validate if address exists
+            let result = await req.model('directory').getSavedAccount(account_number)
+            if (!result) {
+                throw getMessage('udt004')
+            }
+            // validate if address belongs to loggedin customer using not found error message
+            if (result.customer_id != customer_id) {
+                throw getMessage('udt004')
+            }
+
+            res.success(result)
+        } catch (e) {next(e)}
+    }
+
+    fn.getAllSavedAccount = async (req, res, next) => {
+        try {
+            let customer_id = parseInt(req.objCustomer.customer_id) || 0
+            if (customer_id <= 0) {
+                throw getMessage('cst006')
+            }
+
+            let keyword = req.query.keyword || ''
+            keyword = '%' + keyword + '%'
+            let where = ' AND customer_account_directory_deleted = $1 AND customer_account_directory_deleted LIKE $2 '
+            let data = [false, keyword]
+            let order_by = ' customer_account_directory_id DESC '
+            let result = await req.model('directory').getAllSavedAccount(where, data, order_by)
+
+            res.success(result)
+        } catch(e) {next(e)}
+    }
+
+    fn.getPagingSavedAccount = async (req, res, next) => {
+        try {
+            let customer_id = parseInt(req.objCustomer.customer_id) || 0
+            if (customer_id <= 0) {
+                throw getMessage('cst006')
+            }
+
+            let keyword = req.query.keyword || ''
+            keyword = '%' + keyword + '%'
+            let where = ' AND customer_account_directory_deleted = $1 AND customer_account_directory_deleted LIKE $2 '
+            let data = [false, keyword]
+            let order_by = ' customer_account_directory_id DESC  '
+            let page_no = req.query.page || 0
+            let no_per_page = req.query.perpage || 0
+            let result = await req.model('directory').getPagingSavedAccount(
+                where,
+                data,
+                order_by,
+                page_no,
+                no_per_page
+            )
+
+            res.success(result)
+        } catch(e) {next(e)}
+    }
+
+    fn.createSavedAccount = async (req, res, next) => {
+        try {
+            let validator = require('validator')
+            let moment = require('moment')
+            let now = moment().format('YYYY-MM-DD HH:mm:ss')
+
+            let customer_id = parseInt(req.objCustomer.customer_id) || 0
+            if (customer_id <= 0) {
+                throw getMessage('cst006')
+            }
+
+            let number = (req.body.account_number || '').trim()
+
+            // get the account number detail
+
+            // if not exist then throw error
+
+            // if exist then check if the customer_id equal
+
+            // if equal then can't store the account number, throw error
+
+            // if not equal then store the account detail
+            let result = await req.model('directory').getSavedAccount(customer_account.customer_account_id)
+            res.success(result)   
+        } catch(e) {next(e)}
+    }
+    // END SAVED ACCOUNT
     return fn
 }
 
