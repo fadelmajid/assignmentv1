@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS customer_account (
   customer_account_number VARCHAR(100) UNIQUE,
   customer_account_name VARCHAR(100),
   customer_account_balance INT,
-  is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
+  customer_account_status BOOLEAN NOT NULL DEFAULT TRUE,
   created_date TIMESTAMP,
   updated_date TIMESTAMP,
   PRIMARY KEY (customer_account_id)
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS customer_account_directory (
   customer_id INT NOT NULL,
   customer_account_id INT NOT NULL,
   customer_account_directory_name VARCHAR(100),
-  customer_account_status VARCHAR(10),
+  customer_account_directory_deleted BOOLEAN NOT NULL DEFAULT FALSE,
   created_date TIMESTAMP,
   updated_date TIMESTAMP,
   PRIMARY KEY (customer_account_directory_id)

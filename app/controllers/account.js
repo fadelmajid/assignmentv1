@@ -40,7 +40,7 @@ let obj = (rootpath) => {
             let keyword = req.query.keyword || ''
             keyword = '%' + keyword + '%'
             let where = ' AND customer_account_status = $1 AND customer_id = $2 AND (customer_account_name LIKE $3 OR customer_account_number LIKE $4) '
-            let data = ['active', customer_id, keyword, keyword]
+            let data = [true, customer_id, keyword, keyword]
             let order_by = ' customer_account_id ASC '
             let result = await req.model('account').getAllAccount(where, data, order_by)
 
@@ -58,7 +58,7 @@ let obj = (rootpath) => {
             let keyword = req.query.keyword || ''
             keyword = '%' + keyword + '%'
             let where = ' AND customer_account_status = $1 AND customer_id = $2 AND (customer_account_name LIKE $3 OR customer_account_number LIKE $4) '
-            let data = ['active', customer_id, keyword, keyword]
+            let data = [true, customer_id, keyword, keyword]
             let order_by = ' customer_account_id ASC '
             let page_no = req.query.page || 0
             let no_per_page = req.query.perpage || 0
@@ -144,8 +144,7 @@ let obj = (rootpath) => {
             }
 
             let data = {
-                customer_account_name: (req.body.customer_account_name || '').trim(),
-                customer_account_status: (req.body.customer_account_status || 'active').trim(),
+                customer_account_name: (req.body.customer_account_name || account.customer_account_name).trim(),
                 updated_date: moment().format('YYYY-MM-DD HH:mm:ss')
             }
 
@@ -181,13 +180,22 @@ let obj = (rootpath) => {
             }
 
             let data = {
-                customer_account_balance: account.customer_account_balance + amount,
-                updated_date: moment().format('YYYY-MM-DD HH:mm:ss')
+                to : account,
+                from: account,
+                amount: amount,
+                type: 'topup'
             }
 
-            await req.model('account').updateAccount(account.customer_account_id, data)
-            let result = await req.model('account').getAccount(account.customer_account_id)
-            res.success(result)
+            console.log(amount)
+
+            let is_transacted = await req.model('account').accountTransaction(data)
+
+            if(is_transacted){
+                let result = await req.model('account').getAccount(account.customer_account_id)
+                res.success(result)
+            }else{
+                throw getMessage('Transfer fail, please try again')
+            }
         } catch(e) {next(e)}
     }
 
@@ -198,8 +206,16 @@ let obj = (rootpath) => {
                 throw getMessage('cst006')
             }
 
-            // from
+
             let account_number_from = req.params.from || ''
+            let account_number_to = req.body.to_account_number || ''
+
+            // validate account number from and to
+            if(account_number_from == account_number_to){
+                throw getMessage('cannot transfer to the same account')
+            }
+            
+            // from
             if (validator.isEmpty(account_number_from)) {
                 throw getMessage('udt001')
             }
@@ -222,7 +238,6 @@ let obj = (rootpath) => {
             }
             
             // to
-            let account_number_to = req.body.to_account_number || ''
             if (validator.isEmpty(account_number_to)) {
                 throw getMessage('targeted account is required')
             }
@@ -234,11 +249,12 @@ let obj = (rootpath) => {
             
             let data = {
                 to : account_to,
-                from: account_from,
-                amount: amount
+                from: account,
+                amount: amount,
+                type: 'transfer'
             }
 
-            let is_transfered = await req.model('account').transfer(data)
+            let is_transfered = await req.model('account').accountTransaction(data)
 
             if(is_transfered){
                 res.success({}, 201)
