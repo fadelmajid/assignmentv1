@@ -1,4 +1,4 @@
-Assignment API Framework
+Assignment API Framework - Postgres
 ==============
 
 Setup
